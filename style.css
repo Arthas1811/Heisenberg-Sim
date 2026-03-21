@@ -1,0 +1,53 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  overflow: hidden;
+  font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
+  background: radial-gradient(circle at 20% 20%, #0b1b2c, #050b14 60%);
+  color: #e9f1ff;
+}
+
+#scene {
+  width: 100vw;
+  height: 100vh;
+  display: block;
+}
+
+#overlay {
+  position: absolute;
+  top: 14px;
+  left: 14px;
+  z-index: 10;
+  padding: 10px 14px;
+  background: rgba(0, 0, 0, 0.35);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+}
+
+#overlay h1 {
+  margin: 0;
+  font-size: 18px;
+  letter-spacing: 0.5px;
+}
+
+#overlay .hint {
+  margin: 4px 0 0;
+  font-size: 12px;
+  color: #c7d9ff;
+}
+
+.lil-gui {
+  --text-color: #e9f1ff;
+  --name-width: 120px;
+  --background-color: rgba(5, 11, 20, 0.7);
+  --title-background-color: rgba(255, 255, 255, 0.06);
+  --widget-color: rgba(255, 255, 255, 0.08);
+  --hover-color: rgba(255, 255, 255, 0.12);
+  --focus-color: #6dd1ff;
+  color: var(--text-color);
+}
