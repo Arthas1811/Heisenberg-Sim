@@ -26,23 +26,23 @@ By comparing these two modes, you can visualize why the quantum double slit expe
 ## Screenshots
 
 ### Wave Interference Double Slit
-![Double Slit Waves](../Screenshots/Double_Slit_Waves.png)
+![Double Slit Waves](Screenshots/Double_Slit_Waves.png)
 *Classic double slit interference pattern with wave propagation*
 
 ### Classical Particle Trajectories Double Slit
-![Double Slit Particles](../Screenshots/Double_Slit_Particles.png)
+![Double Slit Particles](Screenshots/Double_Slit_Particles.png)
 *Classical particles (like balls) traveling through the slits in straight lines*
 
 ### Interference Pattern
-![Double Slit Interference](../Screenshots/Double_Slit_Interference.png)
+![Double Slit Interference](Screenshots/Double_Slit_Interference.png)
 *The resulting interference pattern from double slit setup*
 
 ### Single Slit Waves
-![Single Slit Waves](../Screenshots/Single_Slit_Waves.png)
+![Single Slit Waves](Screenshots/Single_Slit_Waves.png)
 *Diffraction pattern from a single slit*
 
 ### Single Slit Interference
-![Single Slit Interference](../Screenshots/Single_Slit_Interference.png)
+![Single Slit Interference](Screenshots/Single_Slit_Interference.png)
 *Single slit diffraction effects*
 
 ## Getting Started
