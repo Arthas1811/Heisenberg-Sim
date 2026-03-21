@@ -7024,7 +7024,7 @@ var Sim = (() => {
   function now() {
     return (typeof performance === "undefined" ? Date : performance).now();
   }
-  var REVISION, MOUSE, TOUCH, CullFaceNone, CullFaceBack, CullFaceFront, PCFShadowMap, PCFSoftShadowMap, VSMShadowMap, FrontSide, BackSide, DoubleSide, NoBlending, NormalBlending, AdditiveBlending, SubtractiveBlending, MultiplyBlending, CustomBlending, AddEquation, SubtractEquation, ReverseSubtractEquation, MinEquation, MaxEquation, ZeroFactor, OneFactor, SrcColorFactor, OneMinusSrcColorFactor, SrcAlphaFactor, OneMinusSrcAlphaFactor, DstAlphaFactor, OneMinusDstAlphaFactor, DstColorFactor, OneMinusDstColorFactor, SrcAlphaSaturateFactor, ConstantColorFactor, OneMinusConstantColorFactor, ConstantAlphaFactor, OneMinusConstantAlphaFactor, NeverDepth, AlwaysDepth, LessDepth, LessEqualDepth, EqualDepth, GreaterEqualDepth, GreaterDepth, NotEqualDepth, MultiplyOperation, MixOperation, AddOperation, NoToneMapping, LinearToneMapping, ReinhardToneMapping, CineonToneMapping, ACESFilmicToneMapping, CustomToneMapping, AgXToneMapping, UVMapping, CubeReflectionMapping, CubeRefractionMapping, EquirectangularReflectionMapping, EquirectangularRefractionMapping, CubeUVReflectionMapping, RepeatWrapping, ClampToEdgeWrapping, MirroredRepeatWrapping, NearestFilter, NearestMipmapNearestFilter, NearestMipmapLinearFilter, LinearFilter, LinearMipmapNearestFilter, LinearMipmapLinearFilter, UnsignedByteType, ByteType, ShortType, UnsignedShortType, IntType, UnsignedIntType, FloatType, HalfFloatType, UnsignedShort4444Type, UnsignedShort5551Type, UnsignedInt248Type, AlphaFormat, RGBAFormat, LuminanceFormat, LuminanceAlphaFormat, DepthFormat, DepthStencilFormat, RedFormat, RedIntegerFormat, RGFormat, RGIntegerFormat, RGBAIntegerFormat, RGB_S3TC_DXT1_Format, RGBA_S3TC_DXT1_Format, RGBA_S3TC_DXT3_Format, RGBA_S3TC_DXT5_Format, RGB_PVRTC_4BPPV1_Format, RGB_PVRTC_2BPPV1_Format, RGBA_PVRTC_4BPPV1_Format, RGBA_PVRTC_2BPPV1_Format, RGB_ETC1_Format, RGB_ETC2_Format, RGBA_ETC2_EAC_Format, RGBA_ASTC_4x4_Format, RGBA_ASTC_5x4_Format, RGBA_ASTC_5x5_Format, RGBA_ASTC_6x5_Format, RGBA_ASTC_6x6_Format, RGBA_ASTC_8x5_Format, RGBA_ASTC_8x6_Format, RGBA_ASTC_8x8_Format, RGBA_ASTC_10x5_Format, RGBA_ASTC_10x6_Format, RGBA_ASTC_10x8_Format, RGBA_ASTC_10x10_Format, RGBA_ASTC_12x10_Format, RGBA_ASTC_12x12_Format, RGBA_BPTC_Format, RGB_BPTC_SIGNED_Format, RGB_BPTC_UNSIGNED_Format, RED_RGTC1_Format, SIGNED_RED_RGTC1_Format, RED_GREEN_RGTC2_Format, SIGNED_RED_GREEN_RGTC2_Format, InterpolateDiscrete, InterpolateLinear, InterpolateSmooth, ZeroCurvatureEnding, ZeroSlopeEnding, WrapAroundEnding, LinearEncoding, sRGBEncoding, BasicDepthPacking, RGBADepthPacking, TangentSpaceNormalMap, ObjectSpaceNormalMap, NoColorSpace, SRGBColorSpace, LinearSRGBColorSpace, DisplayP3ColorSpace, LinearDisplayP3ColorSpace, LinearTransfer, SRGBTransfer, Rec709Primaries, P3Primaries, KeepStencilOp, AlwaysStencilFunc, NeverCompare, LessCompare, EqualCompare, LessEqualCompare, GreaterCompare, NotEqualCompare, GreaterEqualCompare, AlwaysCompare, StaticDrawUsage, GLSL3, _SRGBAFormat, WebGLCoordinateSystem, WebGPUCoordinateSystem, EventDispatcher, _lut, _seed, DEG2RAD, RAD2DEG, MathUtils, Vector2, Matrix3, _m3, _cache, LINEAR_SRGB_TO_LINEAR_DISPLAY_P3, LINEAR_DISPLAY_P3_TO_LINEAR_SRGB, COLOR_SPACES, SUPPORTED_WORKING_COLOR_SPACES, ColorManagement, _canvas, ImageUtils, _sourceId, Source, _textureId, Texture, Vector4, RenderTarget, WebGLRenderTarget, DataArrayTexture, Data3DTexture, Quaternion, Vector3, _vector$c, _quaternion$4, Box3, _points, _vector$b, _box$4, _v0$2, _v1$7, _v2$4, _f0, _f1, _f2, _center, _extents, _triangleNormal, _testAxis, _box$3, _v1$6, _v2$3, Sphere, _vector$a, _segCenter, _segDir, _diff, _edge1, _edge2, _normal$1, Ray, Matrix4, _v1$5, _m1$2, _zero, _one, _x, _y, _z, _matrix$1, _quaternion$3, Euler, Layers, _object3DId, _v1$4, _q1, _m1$1, _target, _position$3, _scale$2, _quaternion$2, _xAxis, _yAxis, _zAxis, _addedEvent, _removedEvent, Object3D, _v0$1, _v1$3, _v2$2, _v3$1, _vab, _vac, _vbc, _vap, _vbp, _vcp, warnedGetUV, Triangle, _colorKeywords, _hslA, _hslB, Color, _color, _materialId, Material, MeshBasicMaterial, _vector$9, _vector2$1, BufferAttribute, Uint16BufferAttribute, Uint32BufferAttribute, Float32BufferAttribute, _id$2, _m1, _obj, _offset, _box$2, _boxMorphTargets, _vector$8, BufferGeometry, _inverseMatrix$3, _ray$3, _sphere$6, _sphereHitAt, _vA$1, _vB$1, _vC$1, _tempA, _morphA, _uvA$1, _uvB$1, _uvC$1, _normalA, _normalB, _normalC, _intersectionPoint, _intersectionPointWorld, Mesh, BoxGeometry, UniformsUtils, default_vertex, default_fragment, ShaderMaterial, Camera, PerspectiveCamera, fov, aspect, CubeCamera, CubeTexture, WebGLCubeRenderTarget, _vector1, _vector2, _normalMatrix, Plane, _sphere$5, _vector$7, Frustum, PlaneGeometry, alphahash_fragment, alphahash_pars_fragment, alphamap_fragment, alphamap_pars_fragment, alphatest_fragment, alphatest_pars_fragment, aomap_fragment, aomap_pars_fragment, batching_pars_vertex, batching_vertex, begin_vertex, beginnormal_vertex, bsdfs, iridescence_fragment, bumpmap_pars_fragment, clipping_planes_fragment, clipping_planes_pars_fragment, clipping_planes_pars_vertex, clipping_planes_vertex, color_fragment, color_pars_fragment, color_pars_vertex, color_vertex, common, cube_uv_reflection_fragment, defaultnormal_vertex, displacementmap_pars_vertex, displacementmap_vertex, emissivemap_fragment, emissivemap_pars_fragment, colorspace_fragment, colorspace_pars_fragment, envmap_fragment, envmap_common_pars_fragment, envmap_pars_fragment, envmap_pars_vertex, envmap_vertex, fog_vertex, fog_pars_vertex, fog_fragment, fog_pars_fragment, gradientmap_pars_fragment, lightmap_fragment, lightmap_pars_fragment, lights_lambert_fragment, lights_lambert_pars_fragment, lights_pars_begin, envmap_physical_pars_fragment, lights_toon_fragment, lights_toon_pars_fragment, lights_phong_fragment, lights_phong_pars_fragment, lights_physical_fragment, lights_physical_pars_fragment, lights_fragment_begin, lights_fragment_maps, lights_fragment_end, logdepthbuf_fragment, logdepthbuf_pars_fragment, logdepthbuf_pars_vertex, logdepthbuf_vertex, map_fragment, map_pars_fragment, map_particle_fragment, map_particle_pars_fragment, metalnessmap_fragment, metalnessmap_pars_fragment, morphcolor_vertex, morphnormal_vertex, morphtarget_pars_vertex, morphtarget_vertex, normal_fragment_begin, normal_fragment_maps, normal_pars_fragment, normal_pars_vertex, normal_vertex, normalmap_pars_fragment, clearcoat_normal_fragment_begin, clearcoat_normal_fragment_maps, clearcoat_pars_fragment, iridescence_pars_fragment, opaque_fragment, packing, premultiplied_alpha_fragment, project_vertex, dithering_fragment, dithering_pars_fragment, roughnessmap_fragment, roughnessmap_pars_fragment, shadowmap_pars_fragment, shadowmap_pars_vertex, shadowmap_vertex, shadowmask_pars_fragment, skinbase_vertex, skinning_pars_vertex, skinning_vertex, skinnormal_vertex, specularmap_fragment, specularmap_pars_fragment, tonemapping_fragment, tonemapping_pars_fragment, transmission_fragment, transmission_pars_fragment, uv_pars_fragment, uv_pars_vertex, uv_vertex, worldpos_vertex, vertex$h, fragment$h, vertex$g, fragment$g, vertex$f, fragment$f, vertex$e, fragment$e, vertex$d, fragment$d, vertex$c, fragment$c, vertex$b, fragment$b, vertex$a, fragment$a, vertex$9, fragment$9, vertex$8, fragment$8, vertex$7, fragment$7, vertex$6, fragment$6, vertex$5, fragment$5, vertex$4, fragment$4, vertex$3, fragment$3, vertex$2, fragment$2, vertex$1, fragment$1, ShaderChunk, UniformsLib, ShaderLib, _rgb, OrthographicCamera, LOD_MIN, EXTRA_LOD_SIGMA, MAX_SAMPLES, _flatCamera, _clearColor, _oldTarget, _oldActiveCubeFace, _oldActiveMipmapLevel, PHI, INV_PHI, _axisDirections, PMREMGenerator, DepthTexture, emptyTexture, emptyShadowTexture, emptyArrayTexture, empty3dTexture, emptyCubeTexture, arrayCacheF32, arrayCacheI32, mat4array, mat3array, mat2array, SingleUniform, PureArrayUniform, StructuredUniform, RePathPart, WebGLUniforms, COMPLETION_STATUS_KHR, programIdCount, includePattern, shaderChunkMap, unrollLoopPattern, _id$1, WebGLShaderCache, WebGLShaderStage, nextVersion, MeshDepthMaterial, MeshDistanceMaterial, vertex, fragment, ArrayCamera, Group, _moveEvent, WebXRController, WebXRManager, WebGLRenderer, WebGL1Renderer, FogExp2, Scene, InterleavedBuffer, _vector$6, InterleavedBufferAttribute, SpriteMaterial, _geometry, _intersectPoint, _worldScale, _mvPosition, _alignedPosition, _rotatedPosition, _viewWorldMatrix, _vA, _vB, _vC, _uvA, _uvB, _uvC, Sprite, PointsMaterial, _inverseMatrix, _ray, _sphere, _position$2, Points, CanvasTexture, SphereGeometry, TorusGeometry, MeshPhongMaterial, MeshLambertMaterial, Interpolant, CubicInterpolant, LinearInterpolant, DiscreteInterpolant, KeyframeTrack, BooleanKeyframeTrack, ColorKeyframeTrack, NumberKeyframeTrack, QuaternionLinearInterpolant, QuaternionKeyframeTrack, StringKeyframeTrack, VectorKeyframeTrack, LoadingManager, DefaultLoadingManager, Loader, Light, _projScreenMatrix$1, _lightPositionWorld$1, _lookTarget$1, LightShadow, DirectionalLightShadow, DirectionalLight, AmbientLight, Clock, _RESERVED_CHARS_RE, _reservedRe, _wordChar, _wordCharOrDot, _directoryRe, _nodeRe, _objectRe, _propertyRe, _trackRe, _supportedObjectNames, Composite, PropertyBinding, _controlInterpolantsResultBuffer, Spherical;
+  var REVISION, MOUSE, TOUCH, CullFaceNone, CullFaceBack, CullFaceFront, PCFShadowMap, PCFSoftShadowMap, VSMShadowMap, FrontSide, BackSide, DoubleSide, NoBlending, NormalBlending, AdditiveBlending, SubtractiveBlending, MultiplyBlending, CustomBlending, AddEquation, SubtractEquation, ReverseSubtractEquation, MinEquation, MaxEquation, ZeroFactor, OneFactor, SrcColorFactor, OneMinusSrcColorFactor, SrcAlphaFactor, OneMinusSrcAlphaFactor, DstAlphaFactor, OneMinusDstAlphaFactor, DstColorFactor, OneMinusDstColorFactor, SrcAlphaSaturateFactor, ConstantColorFactor, OneMinusConstantColorFactor, ConstantAlphaFactor, OneMinusConstantAlphaFactor, NeverDepth, AlwaysDepth, LessDepth, LessEqualDepth, EqualDepth, GreaterEqualDepth, GreaterDepth, NotEqualDepth, MultiplyOperation, MixOperation, AddOperation, NoToneMapping, LinearToneMapping, ReinhardToneMapping, CineonToneMapping, ACESFilmicToneMapping, CustomToneMapping, AgXToneMapping, UVMapping, CubeReflectionMapping, CubeRefractionMapping, EquirectangularReflectionMapping, EquirectangularRefractionMapping, CubeUVReflectionMapping, RepeatWrapping, ClampToEdgeWrapping, MirroredRepeatWrapping, NearestFilter, NearestMipmapNearestFilter, NearestMipmapLinearFilter, LinearFilter, LinearMipmapNearestFilter, LinearMipmapLinearFilter, UnsignedByteType, ByteType, ShortType, UnsignedShortType, IntType, UnsignedIntType, FloatType, HalfFloatType, UnsignedShort4444Type, UnsignedShort5551Type, UnsignedInt248Type, AlphaFormat, RGBAFormat, LuminanceFormat, LuminanceAlphaFormat, DepthFormat, DepthStencilFormat, RedFormat, RedIntegerFormat, RGFormat, RGIntegerFormat, RGBAIntegerFormat, RGB_S3TC_DXT1_Format, RGBA_S3TC_DXT1_Format, RGBA_S3TC_DXT3_Format, RGBA_S3TC_DXT5_Format, RGB_PVRTC_4BPPV1_Format, RGB_PVRTC_2BPPV1_Format, RGBA_PVRTC_4BPPV1_Format, RGBA_PVRTC_2BPPV1_Format, RGB_ETC1_Format, RGB_ETC2_Format, RGBA_ETC2_EAC_Format, RGBA_ASTC_4x4_Format, RGBA_ASTC_5x4_Format, RGBA_ASTC_5x5_Format, RGBA_ASTC_6x5_Format, RGBA_ASTC_6x6_Format, RGBA_ASTC_8x5_Format, RGBA_ASTC_8x6_Format, RGBA_ASTC_8x8_Format, RGBA_ASTC_10x5_Format, RGBA_ASTC_10x6_Format, RGBA_ASTC_10x8_Format, RGBA_ASTC_10x10_Format, RGBA_ASTC_12x10_Format, RGBA_ASTC_12x12_Format, RGBA_BPTC_Format, RGB_BPTC_SIGNED_Format, RGB_BPTC_UNSIGNED_Format, RED_RGTC1_Format, SIGNED_RED_RGTC1_Format, RED_GREEN_RGTC2_Format, SIGNED_RED_GREEN_RGTC2_Format, InterpolateDiscrete, InterpolateLinear, InterpolateSmooth, ZeroCurvatureEnding, ZeroSlopeEnding, WrapAroundEnding, LinearEncoding, sRGBEncoding, BasicDepthPacking, RGBADepthPacking, TangentSpaceNormalMap, ObjectSpaceNormalMap, NoColorSpace, SRGBColorSpace, LinearSRGBColorSpace, DisplayP3ColorSpace, LinearDisplayP3ColorSpace, LinearTransfer, SRGBTransfer, Rec709Primaries, P3Primaries, KeepStencilOp, AlwaysStencilFunc, NeverCompare, LessCompare, EqualCompare, LessEqualCompare, GreaterCompare, NotEqualCompare, GreaterEqualCompare, AlwaysCompare, StaticDrawUsage, GLSL3, _SRGBAFormat, WebGLCoordinateSystem, WebGPUCoordinateSystem, EventDispatcher, _lut, _seed, DEG2RAD, RAD2DEG, MathUtils, Vector2, Matrix3, _m3, _cache, LINEAR_SRGB_TO_LINEAR_DISPLAY_P3, LINEAR_DISPLAY_P3_TO_LINEAR_SRGB, COLOR_SPACES, SUPPORTED_WORKING_COLOR_SPACES, ColorManagement, _canvas, ImageUtils, _sourceId, Source, _textureId, Texture, Vector4, RenderTarget, WebGLRenderTarget, DataArrayTexture, Data3DTexture, Quaternion, Vector3, _vector$c, _quaternion$4, Box3, _points, _vector$b, _box$4, _v0$2, _v1$7, _v2$4, _f0, _f1, _f2, _center, _extents, _triangleNormal, _testAxis, _box$3, _v1$6, _v2$3, Sphere, _vector$a, _segCenter, _segDir, _diff, _edge1, _edge2, _normal$1, Ray, Matrix4, _v1$5, _m1$2, _zero, _one, _x, _y, _z, _matrix$1, _quaternion$3, Euler, Layers, _object3DId, _v1$4, _q1, _m1$1, _target, _position$3, _scale$2, _quaternion$2, _xAxis, _yAxis, _zAxis, _addedEvent, _removedEvent, Object3D, _v0$1, _v1$3, _v2$2, _v3$1, _vab, _vac, _vbc, _vap, _vbp, _vcp, warnedGetUV, Triangle, _colorKeywords, _hslA, _hslB, Color, _color, _materialId, Material, MeshBasicMaterial, _vector$9, _vector2$1, BufferAttribute, Uint16BufferAttribute, Uint32BufferAttribute, Float32BufferAttribute, _id$2, _m1, _obj, _offset, _box$2, _boxMorphTargets, _vector$8, BufferGeometry, _inverseMatrix$3, _ray$3, _sphere$6, _sphereHitAt, _vA$1, _vB$1, _vC$1, _tempA, _morphA, _uvA$1, _uvB$1, _uvC$1, _normalA, _normalB, _normalC, _intersectionPoint, _intersectionPointWorld, Mesh, BoxGeometry, UniformsUtils, default_vertex, default_fragment, ShaderMaterial, Camera, PerspectiveCamera, fov, aspect, CubeCamera, CubeTexture, WebGLCubeRenderTarget, _vector1, _vector2, _normalMatrix, Plane, _sphere$5, _vector$7, Frustum, PlaneGeometry, alphahash_fragment, alphahash_pars_fragment, alphamap_fragment, alphamap_pars_fragment, alphatest_fragment, alphatest_pars_fragment, aomap_fragment, aomap_pars_fragment, batching_pars_vertex, batching_vertex, begin_vertex, beginnormal_vertex, bsdfs, iridescence_fragment, bumpmap_pars_fragment, clipping_planes_fragment, clipping_planes_pars_fragment, clipping_planes_pars_vertex, clipping_planes_vertex, color_fragment, color_pars_fragment, color_pars_vertex, color_vertex, common, cube_uv_reflection_fragment, defaultnormal_vertex, displacementmap_pars_vertex, displacementmap_vertex, emissivemap_fragment, emissivemap_pars_fragment, colorspace_fragment, colorspace_pars_fragment, envmap_fragment, envmap_common_pars_fragment, envmap_pars_fragment, envmap_pars_vertex, envmap_vertex, fog_vertex, fog_pars_vertex, fog_fragment, fog_pars_fragment, gradientmap_pars_fragment, lightmap_fragment, lightmap_pars_fragment, lights_lambert_fragment, lights_lambert_pars_fragment, lights_pars_begin, envmap_physical_pars_fragment, lights_toon_fragment, lights_toon_pars_fragment, lights_phong_fragment, lights_phong_pars_fragment, lights_physical_fragment, lights_physical_pars_fragment, lights_fragment_begin, lights_fragment_maps, lights_fragment_end, logdepthbuf_fragment, logdepthbuf_pars_fragment, logdepthbuf_pars_vertex, logdepthbuf_vertex, map_fragment, map_pars_fragment, map_particle_fragment, map_particle_pars_fragment, metalnessmap_fragment, metalnessmap_pars_fragment, morphcolor_vertex, morphnormal_vertex, morphtarget_pars_vertex, morphtarget_vertex, normal_fragment_begin, normal_fragment_maps, normal_pars_fragment, normal_pars_vertex, normal_vertex, normalmap_pars_fragment, clearcoat_normal_fragment_begin, clearcoat_normal_fragment_maps, clearcoat_pars_fragment, iridescence_pars_fragment, opaque_fragment, packing, premultiplied_alpha_fragment, project_vertex, dithering_fragment, dithering_pars_fragment, roughnessmap_fragment, roughnessmap_pars_fragment, shadowmap_pars_fragment, shadowmap_pars_vertex, shadowmap_vertex, shadowmask_pars_fragment, skinbase_vertex, skinning_pars_vertex, skinning_vertex, skinnormal_vertex, specularmap_fragment, specularmap_pars_fragment, tonemapping_fragment, tonemapping_pars_fragment, transmission_fragment, transmission_pars_fragment, uv_pars_fragment, uv_pars_vertex, uv_vertex, worldpos_vertex, vertex$h, fragment$h, vertex$g, fragment$g, vertex$f, fragment$f, vertex$e, fragment$e, vertex$d, fragment$d, vertex$c, fragment$c, vertex$b, fragment$b, vertex$a, fragment$a, vertex$9, fragment$9, vertex$8, fragment$8, vertex$7, fragment$7, vertex$6, fragment$6, vertex$5, fragment$5, vertex$4, fragment$4, vertex$3, fragment$3, vertex$2, fragment$2, vertex$1, fragment$1, ShaderChunk, UniformsLib, ShaderLib, _rgb, OrthographicCamera, LOD_MIN, EXTRA_LOD_SIGMA, MAX_SAMPLES, _flatCamera, _clearColor, _oldTarget, _oldActiveCubeFace, _oldActiveMipmapLevel, PHI, INV_PHI, _axisDirections, PMREMGenerator, DepthTexture, emptyTexture, emptyShadowTexture, emptyArrayTexture, empty3dTexture, emptyCubeTexture, arrayCacheF32, arrayCacheI32, mat4array, mat3array, mat2array, SingleUniform, PureArrayUniform, StructuredUniform, RePathPart, WebGLUniforms, COMPLETION_STATUS_KHR, programIdCount, includePattern, shaderChunkMap, unrollLoopPattern, _id$1, WebGLShaderCache, WebGLShaderStage, nextVersion, MeshDepthMaterial, MeshDistanceMaterial, vertex, fragment, ArrayCamera, Group, _moveEvent, WebXRController, WebXRManager, WebGLRenderer, WebGL1Renderer, FogExp2, Scene, InterleavedBuffer, _vector$6, InterleavedBufferAttribute, SpriteMaterial, _geometry, _intersectPoint, _worldScale, _mvPosition, _alignedPosition, _rotatedPosition, _viewWorldMatrix, _vA, _vB, _vC, _uvA, _uvB, _uvC, Sprite, LineBasicMaterial, _start$1, _end$1, _inverseMatrix$1, _ray$1, _sphere$1, Line, PointsMaterial, _inverseMatrix, _ray, _sphere, _position$2, Points, CanvasTexture, SphereGeometry, TorusGeometry, MeshStandardMaterial, MeshPhongMaterial, MeshLambertMaterial, Interpolant, CubicInterpolant, LinearInterpolant, DiscreteInterpolant, KeyframeTrack, BooleanKeyframeTrack, ColorKeyframeTrack, NumberKeyframeTrack, QuaternionLinearInterpolant, QuaternionKeyframeTrack, StringKeyframeTrack, VectorKeyframeTrack, LoadingManager, DefaultLoadingManager, Loader, Light, _projScreenMatrix$1, _lightPositionWorld$1, _lookTarget$1, LightShadow, DirectionalLightShadow, DirectionalLight, AmbientLight, Clock, _RESERVED_CHARS_RE, _reservedRe, _wordChar, _wordCharOrDot, _directoryRe, _nodeRe, _objectRe, _propertyRe, _trackRe, _supportedObjectNames, Composite, PropertyBinding, _controlInterpolantsResultBuffer, Spherical;
   var init_three_module = __esm({
     "vendor/three.module.js"() {
       REVISION = "160";
@@ -18287,6 +18287,155 @@ var Sim = (() => {
           return this;
         }
       };
+      LineBasicMaterial = class extends Material {
+        constructor(parameters) {
+          super();
+          this.isLineBasicMaterial = true;
+          this.type = "LineBasicMaterial";
+          this.color = new Color(16777215);
+          this.map = null;
+          this.linewidth = 1;
+          this.linecap = "round";
+          this.linejoin = "round";
+          this.fog = true;
+          this.setValues(parameters);
+        }
+        copy(source) {
+          super.copy(source);
+          this.color.copy(source.color);
+          this.map = source.map;
+          this.linewidth = source.linewidth;
+          this.linecap = source.linecap;
+          this.linejoin = source.linejoin;
+          this.fog = source.fog;
+          return this;
+        }
+      };
+      _start$1 = /* @__PURE__ */ new Vector3();
+      _end$1 = /* @__PURE__ */ new Vector3();
+      _inverseMatrix$1 = /* @__PURE__ */ new Matrix4();
+      _ray$1 = /* @__PURE__ */ new Ray();
+      _sphere$1 = /* @__PURE__ */ new Sphere();
+      Line = class extends Object3D {
+        constructor(geometry = new BufferGeometry(), material = new LineBasicMaterial()) {
+          super();
+          this.isLine = true;
+          this.type = "Line";
+          this.geometry = geometry;
+          this.material = material;
+          this.updateMorphTargets();
+        }
+        copy(source, recursive) {
+          super.copy(source, recursive);
+          this.material = Array.isArray(source.material) ? source.material.slice() : source.material;
+          this.geometry = source.geometry;
+          return this;
+        }
+        computeLineDistances() {
+          const geometry = this.geometry;
+          if (geometry.index === null) {
+            const positionAttribute = geometry.attributes.position;
+            const lineDistances = [0];
+            for (let i2 = 1, l2 = positionAttribute.count; i2 < l2; i2++) {
+              _start$1.fromBufferAttribute(positionAttribute, i2 - 1);
+              _end$1.fromBufferAttribute(positionAttribute, i2);
+              lineDistances[i2] = lineDistances[i2 - 1];
+              lineDistances[i2] += _start$1.distanceTo(_end$1);
+            }
+            geometry.setAttribute("lineDistance", new Float32BufferAttribute(lineDistances, 1));
+          } else {
+            console.warn("THREE.Line.computeLineDistances(): Computation only possible with non-indexed BufferGeometry.");
+          }
+          return this;
+        }
+        raycast(raycaster, intersects) {
+          const geometry = this.geometry;
+          const matrixWorld = this.matrixWorld;
+          const threshold = raycaster.params.Line.threshold;
+          const drawRange = geometry.drawRange;
+          if (geometry.boundingSphere === null) geometry.computeBoundingSphere();
+          _sphere$1.copy(geometry.boundingSphere);
+          _sphere$1.applyMatrix4(matrixWorld);
+          _sphere$1.radius += threshold;
+          if (raycaster.ray.intersectsSphere(_sphere$1) === false) return;
+          _inverseMatrix$1.copy(matrixWorld).invert();
+          _ray$1.copy(raycaster.ray).applyMatrix4(_inverseMatrix$1);
+          const localThreshold = threshold / ((this.scale.x + this.scale.y + this.scale.z) / 3);
+          const localThresholdSq = localThreshold * localThreshold;
+          const vStart = new Vector3();
+          const vEnd = new Vector3();
+          const interSegment = new Vector3();
+          const interRay = new Vector3();
+          const step = this.isLineSegments ? 2 : 1;
+          const index = geometry.index;
+          const attributes = geometry.attributes;
+          const positionAttribute = attributes.position;
+          if (index !== null) {
+            const start = Math.max(0, drawRange.start);
+            const end = Math.min(index.count, drawRange.start + drawRange.count);
+            for (let i2 = start, l2 = end - 1; i2 < l2; i2 += step) {
+              const a2 = index.getX(i2);
+              const b = index.getX(i2 + 1);
+              vStart.fromBufferAttribute(positionAttribute, a2);
+              vEnd.fromBufferAttribute(positionAttribute, b);
+              const distSq = _ray$1.distanceSqToSegment(vStart, vEnd, interRay, interSegment);
+              if (distSq > localThresholdSq) continue;
+              interRay.applyMatrix4(this.matrixWorld);
+              const distance = raycaster.ray.origin.distanceTo(interRay);
+              if (distance < raycaster.near || distance > raycaster.far) continue;
+              intersects.push({
+                distance,
+                // What do we want? intersection point on the ray or on the segment??
+                // point: raycaster.ray.at( distance ),
+                point: interSegment.clone().applyMatrix4(this.matrixWorld),
+                index: i2,
+                face: null,
+                faceIndex: null,
+                object: this
+              });
+            }
+          } else {
+            const start = Math.max(0, drawRange.start);
+            const end = Math.min(positionAttribute.count, drawRange.start + drawRange.count);
+            for (let i2 = start, l2 = end - 1; i2 < l2; i2 += step) {
+              vStart.fromBufferAttribute(positionAttribute, i2);
+              vEnd.fromBufferAttribute(positionAttribute, i2 + 1);
+              const distSq = _ray$1.distanceSqToSegment(vStart, vEnd, interRay, interSegment);
+              if (distSq > localThresholdSq) continue;
+              interRay.applyMatrix4(this.matrixWorld);
+              const distance = raycaster.ray.origin.distanceTo(interRay);
+              if (distance < raycaster.near || distance > raycaster.far) continue;
+              intersects.push({
+                distance,
+                // What do we want? intersection point on the ray or on the segment??
+                // point: raycaster.ray.at( distance ),
+                point: interSegment.clone().applyMatrix4(this.matrixWorld),
+                index: i2,
+                face: null,
+                faceIndex: null,
+                object: this
+              });
+            }
+          }
+        }
+        updateMorphTargets() {
+          const geometry = this.geometry;
+          const morphAttributes = geometry.morphAttributes;
+          const keys = Object.keys(morphAttributes);
+          if (keys.length > 0) {
+            const morphAttribute = morphAttributes[keys[0]];
+            if (morphAttribute !== void 0) {
+              this.morphTargetInfluences = [];
+              this.morphTargetDictionary = {};
+              for (let m = 0, ml = morphAttribute.length; m < ml; m++) {
+                const name = morphAttribute[m].name || String(m);
+                this.morphTargetInfluences.push(0);
+                this.morphTargetDictionary[name] = m;
+              }
+            }
+          }
+        }
+      };
       PointsMaterial = class extends Material {
         constructor(parameters) {
           super();
@@ -18517,6 +18666,80 @@ var Sim = (() => {
         }
         static fromJSON(data) {
           return new _TorusGeometry(data.radius, data.tube, data.radialSegments, data.tubularSegments, data.arc);
+        }
+      };
+      MeshStandardMaterial = class extends Material {
+        constructor(parameters) {
+          super();
+          this.isMeshStandardMaterial = true;
+          this.defines = { "STANDARD": "" };
+          this.type = "MeshStandardMaterial";
+          this.color = new Color(16777215);
+          this.roughness = 1;
+          this.metalness = 0;
+          this.map = null;
+          this.lightMap = null;
+          this.lightMapIntensity = 1;
+          this.aoMap = null;
+          this.aoMapIntensity = 1;
+          this.emissive = new Color(0);
+          this.emissiveIntensity = 1;
+          this.emissiveMap = null;
+          this.bumpMap = null;
+          this.bumpScale = 1;
+          this.normalMap = null;
+          this.normalMapType = TangentSpaceNormalMap;
+          this.normalScale = new Vector2(1, 1);
+          this.displacementMap = null;
+          this.displacementScale = 1;
+          this.displacementBias = 0;
+          this.roughnessMap = null;
+          this.metalnessMap = null;
+          this.alphaMap = null;
+          this.envMap = null;
+          this.envMapIntensity = 1;
+          this.wireframe = false;
+          this.wireframeLinewidth = 1;
+          this.wireframeLinecap = "round";
+          this.wireframeLinejoin = "round";
+          this.flatShading = false;
+          this.fog = true;
+          this.setValues(parameters);
+        }
+        copy(source) {
+          super.copy(source);
+          this.defines = { "STANDARD": "" };
+          this.color.copy(source.color);
+          this.roughness = source.roughness;
+          this.metalness = source.metalness;
+          this.map = source.map;
+          this.lightMap = source.lightMap;
+          this.lightMapIntensity = source.lightMapIntensity;
+          this.aoMap = source.aoMap;
+          this.aoMapIntensity = source.aoMapIntensity;
+          this.emissive.copy(source.emissive);
+          this.emissiveMap = source.emissiveMap;
+          this.emissiveIntensity = source.emissiveIntensity;
+          this.bumpMap = source.bumpMap;
+          this.bumpScale = source.bumpScale;
+          this.normalMap = source.normalMap;
+          this.normalMapType = source.normalMapType;
+          this.normalScale.copy(source.normalScale);
+          this.displacementMap = source.displacementMap;
+          this.displacementScale = source.displacementScale;
+          this.displacementBias = source.displacementBias;
+          this.roughnessMap = source.roughnessMap;
+          this.metalnessMap = source.metalnessMap;
+          this.alphaMap = source.alphaMap;
+          this.envMap = source.envMap;
+          this.envMapIntensity = source.envMapIntensity;
+          this.wireframe = source.wireframe;
+          this.wireframeLinewidth = source.wireframeLinewidth;
+          this.wireframeLinecap = source.wireframeLinecap;
+          this.wireframeLinejoin = source.wireframeLinejoin;
+          this.flatShading = source.flatShading;
+          this.fog = source.fog;
+          return this;
         }
       };
       MeshPhongMaterial = class extends Material {
@@ -21061,6 +21284,11 @@ var Sim = (() => {
         // world units
         slitSeparation: 3,
         slitWidth: 0.25,
+        slitCount: 2,
+        slitMaskMode: "all",
+        // 'all' | 'single' | 'cycle'
+        activeSlit: 0,
+        cyclePeriod: 2.5,
         slitPlaneZ: 5,
         screenZ: 12.5,
         screenWidth: 22,
@@ -21071,10 +21299,13 @@ var Sim = (() => {
         emissionPerSpeed: 20,
         // photons per second per unit speed
         derivedEmission: 0,
+        mode: "wave",
+        // 'wave' | 'particle'
         autoRotate: false,
         showField: true,
         showWall: true,
         showIndicators: true,
+        showTrails: true,
         paused: false,
         resetDetections: () => resetHits(),
         resetCamera: () => setCameraPreset("threeQuarter"),
@@ -21098,6 +21329,12 @@ var Sim = (() => {
       var hitSpriteMaterial;
       var hitBarMaterial;
       var simTime = 0;
+      var slitPositions = [];
+      var openSlitIndices = [];
+      var openSlitPositions = [];
+      var lastMaskSignature = "";
+      var trails = [];
+      var trailMaterial;
       function currentEmissionRate() {
         return params.emissionPerSpeed * params.waveSpeed;
       }
@@ -21111,7 +21348,8 @@ var Sim = (() => {
         addSource();
         makeHitSpriteMaterial();
         makeHitBarMaterial();
-        buildWall();
+        makeTrailMaterial();
+        updateSlitMask(0, true);
         buildScreen();
         buildField();
         setupGui();
@@ -21165,52 +21403,41 @@ var Sim = (() => {
       }
       function buildWall() {
         if (wall) scene.remove(wall);
-        const wallWidth = Math.max(params.screenWidth, params.slitSeparation * 2 + 4, 8);
+        const span = Math.max(2, (params.slitCount - 1) * params.slitSeparation + params.slitWidth);
+        const wallWidth = Math.max(params.screenWidth, span + 4, 8);
         const wallHeight = 6;
-        const geo = new PlaneGeometry(wallWidth, wallHeight, 1, 1);
-        const alphaTex = makeSlitAlphaTexture(wallWidth, wallHeight);
-        const mat = new MeshBasicMaterial({
-          color: 1844276,
-          opacity: 0.92,
-          transparent: true,
-          alphaMap: alphaTex,
-          side: DoubleSide
+        const wallThickness = 0.8;
+        const blocks = new Group();
+        const color = 2107962;
+        const slitHeight = wallHeight * 0.85;
+        const capHeight = (wallHeight - slitHeight) / 2;
+        const positions = computeSlitPositions();
+        const openings = openSlitPositions.length ? openSlitPositions : positions;
+        const halfW = wallWidth / 2;
+        let cursor = -halfW;
+        const makeBlock = (xStart, xEnd, yCenter, h2) => {
+          const width = xEnd - xStart;
+          if (width <= 0.02 || h2 <= 0.02) return;
+          const geo = new BoxGeometry(width, h2, wallThickness);
+          const mat = new MeshStandardMaterial({
+            color,
+            metalness: 0.05,
+            roughness: 0.65
+          });
+          const mesh = new Mesh(geo, mat);
+          mesh.position.set((xStart + xEnd) / 2, yCenter, 0);
+          blocks.add(mesh);
+        };
+        makeBlock(-halfW, halfW, slitHeight / 2 + capHeight / 2, capHeight);
+        makeBlock(-halfW, halfW, -(slitHeight / 2) - capHeight / 2, capHeight);
+        openings.map((x) => ({ start: x - params.slitWidth / 2, end: x + params.slitWidth / 2 })).sort((a2, b) => a2.start - b.start).forEach((open) => {
+          makeBlock(cursor, open.start, 0, slitHeight);
+          cursor = open.end;
         });
-        wall = new Mesh(geo, mat);
+        makeBlock(cursor, halfW, 0, slitHeight);
+        wall = blocks;
         wall.position.z = params.slitPlaneZ;
-        wall.renderOrder = 0;
         scene.add(wall);
-      }
-      function makeSlitAlphaTexture(width, height) {
-        const c2 = document.createElement("canvas");
-        c2.width = 512;
-        c2.height = 256;
-        const ctx = c2.getContext("2d");
-        ctx.fillStyle = "white";
-        ctx.fillRect(0, 0, c2.width, c2.height);
-        const slitWidthPx = params.slitWidth / width * c2.width;
-        const slitSepPx = params.slitSeparation / width * c2.width;
-        const midX = c2.width / 2;
-        const midY = c2.height / 2;
-        const slitHeight = c2.height * 0.9;
-        ctx.globalCompositeOperation = "destination-out";
-        ctx.fillStyle = "black";
-        ctx.fillRect(
-          midX - slitSepPx / 2 - slitWidthPx / 2,
-          midY - slitHeight / 2,
-          slitWidthPx,
-          slitHeight
-        );
-        ctx.fillRect(
-          midX + slitSepPx / 2 - slitWidthPx / 2,
-          midY - slitHeight / 2,
-          slitWidthPx,
-          slitHeight
-        );
-        const tex = new CanvasTexture(c2);
-        tex.wrapS = tex.wrapT = ClampToEdgeWrapping;
-        tex.needsUpdate = true;
-        return tex;
       }
       function buildScreen() {
         if (screenBase) scene.remove(screenBase);
@@ -21260,7 +21487,8 @@ var Sim = (() => {
       }
       function buildField() {
         if (field) scene.remove(field.mesh);
-        const width = Math.max(params.screenWidth, params.slitSeparation * 2 + 4);
+        const span = Math.max(2, (params.slitCount - 1) * params.slitSeparation + params.slitWidth);
+        const width = Math.max(params.screenWidth, span + 4);
         const zStart = 0;
         const depth = Math.max(params.screenZ - zStart, 0.1);
         const segX = 96;
@@ -21339,10 +21567,20 @@ var Sim = (() => {
           depthTest: false
         });
       }
+      function makeTrailMaterial() {
+        trailMaterial = new LineBasicMaterial({
+          color: 16765567,
+          transparent: true,
+          opacity: 0.7,
+          depthWrite: false,
+          depthTest: true,
+          blending: AdditiveBlending
+        });
+      }
       function spawnHitFlash(x) {
         if (!hitSpriteMaterial || !params.showIndicators) return;
         const sprite = new Sprite(hitSpriteMaterial.clone());
-        sprite.scale.set(0.7, 0.7, 0.7);
+        sprite.scale.set(0.5, 0.5, 0.5);
         sprite.position.set(x, 0, params.screenZ + 2e-3);
         sprite.material.opacity = 1;
         scene.add(sprite);
@@ -21383,6 +21621,15 @@ var Sim = (() => {
           if (!keep) scene.remove(h2.mesh);
           return keep;
         });
+        if (trails.length) {
+          for (const tr of trails) {
+            tr.life += dt;
+            const t2 = tr.maxLife > 0 ? tr.life / tr.maxLife : 1;
+            tr.mesh.material.opacity = Math.max(0, 1 - t2);
+            if (tr.mesh.material.opacity <= 0) scene.remove(tr.mesh);
+          }
+          trails = trails.filter((tr) => tr.life < tr.maxLife);
+        }
       }
       function waveNumber() {
         return 2 * Math.PI / params.wavelength;
@@ -21393,6 +21640,38 @@ var Sim = (() => {
       function softClamp(v, limit = 2) {
         return Math.tanh(v / limit) * limit;
       }
+      function computeSlitPositions() {
+        const n2 = Math.max(1, Math.round(params.slitCount));
+        const d2 = params.slitSeparation;
+        const start = -((n2 - 1) / 2) * d2;
+        const arr = [];
+        for (let i2 = 0; i2 < n2; i2++) {
+          arr.push(start + i2 * d2);
+        }
+        slitPositions = arr;
+        return arr;
+      }
+      function updateSlitMask(time, force = false) {
+        const positions = computeSlitPositions();
+        let openIdx = [];
+        if (params.slitMaskMode === "single") {
+          const idx = Math.max(0, Math.min(positions.length - 1, Math.round(params.activeSlit)));
+          openIdx = [idx];
+        } else if (params.slitMaskMode === "cycle") {
+          const idx = Math.max(0, Math.min(positions.length - 1, Math.floor(time / Math.max(0.1, params.cyclePeriod)) % positions.length));
+          openIdx = [idx];
+        } else {
+          openIdx = positions.map((_, i2) => i2);
+        }
+        openSlitIndices = openIdx;
+        openSlitPositions = openIdx.map((i2) => positions[i2]);
+        const sig = openSlitIndices.join(",");
+        if (force || sig !== lastMaskSignature) {
+          lastMaskSignature = sig;
+          buildWall();
+          rebuildDistribution();
+        }
+      }
       function amplitudeAtPoint(x, z, t2) {
         const k = waveNumber();
         const omega = angularFrequency();
@@ -21402,7 +21681,7 @@ var Sim = (() => {
           return softClamp(Math.sin(phase) / Math.max(r2, 0.15));
         }
         const slitZ = params.slitPlaneZ;
-        const slits = [-params.slitSeparation / 2, params.slitSeparation / 2];
+        const slits = openSlitPositions.length ? openSlitPositions : computeSlitPositions();
         let amp = 0;
         for (const sx of slits) {
           const rSource = Math.hypot(sx - source.x, slitZ - source.z);
@@ -21416,13 +21695,43 @@ var Sim = (() => {
       function intensityAtScreenX(x) {
         const L = Math.max(params.screenZ - params.slitPlaneZ, 1e-3);
         const k = waveNumber();
-        const d2 = params.slitSeparation;
         const a2 = params.slitWidth;
-        const r1 = Math.sqrt(Math.pow(x + d2 / 2, 2) + L * L);
-        const r2 = Math.sqrt(Math.pow(x - d2 / 2, 2) + L * L);
+        const slits = openSlitPositions.length ? openSlitPositions : computeSlitPositions();
+        if (!slits.length) return 0;
+        let real = 0;
+        let imag = 0;
+        for (const s2 of slits) {
+          const r2 = Math.sqrt(Math.pow(x - s2, 2) + L * L);
+          real += Math.cos(k * r2) / r2;
+          imag += Math.sin(k * r2) / r2;
+        }
         const single = singleSlitEnvelope(x, a2, L);
-        const I = 0.5 / (r1 * r1) + 0.5 / (r2 * r2) + 1 / (r1 * r2) * Math.cos(k * (r1 - r2));
-        return Math.max(I * single, 0);
+        const I = (real * real + imag * imag) * single;
+        return Math.max(I, 0);
+      }
+      function particleIntensityAtScreenX(x) {
+        const sigma = Math.max(0.1, params.slitWidth * 0.35);
+        const slits = openSlitPositions.length ? openSlitPositions : computeSlitPositions();
+        if (!slits.length) return 0;
+        let sum = 0;
+        for (const s2 of slits) {
+          const dx = x - s2;
+          sum += Math.exp(-0.5 * (dx * dx) / (sigma * sigma));
+        }
+        return sum;
+      }
+      function randn() {
+        let u2 = 0, v = 0;
+        while (u2 === 0) u2 = Math.random();
+        while (v === 0) v = Math.random();
+        return Math.sqrt(-2 * Math.log(u2)) * Math.cos(2 * Math.PI * v);
+      }
+      function sampleParticleX() {
+        const slits = openSlitPositions.length ? openSlitPositions : computeSlitPositions();
+        if (!slits.length) return 0;
+        const s2 = slits[Math.floor(Math.random() * slits.length)];
+        const sigma = Math.max(0.1, params.slitWidth * 0.35);
+        return s2 + randn() * sigma;
       }
       function singleSlitEnvelope(x, a2, L) {
         const beta = Math.PI * a2 * x / (params.wavelength * L);
@@ -21438,7 +21747,7 @@ var Sim = (() => {
         let sum = 0;
         for (let i2 = 0; i2 < samples; i2++) {
           const x = -halfW + i2 / (samples - 1) * params.screenWidth;
-          const val = intensityAtScreenX(x);
+          const val = params.mode === "particle" ? particleIntensityAtScreenX(x) : intensityAtScreenX(x);
           distribution[i2] = val;
           sum += val;
         }
@@ -21455,6 +21764,7 @@ var Sim = (() => {
         }
       }
       function sampleScreenX() {
+        if (params.mode === "particle") return sampleParticleX();
         const r2 = Math.random();
         let low = 0;
         let high = cumulative.length - 1;
@@ -21468,8 +21778,8 @@ var Sim = (() => {
       }
       function updateField(time) {
         if (!field) return;
-        field.mesh.visible = params.showField;
-        if (!params.showField) return;
+        field.mesh.visible = params.showField && params.mode === "wave";
+        if (!field.mesh.visible) return;
         const pos = field.geo.getAttribute("position");
         const col = field.geo.getAttribute("color");
         const arr = pos.array;
@@ -21504,11 +21814,12 @@ var Sim = (() => {
         const h2 = ctx.canvas.height;
         const halfW = params.screenWidth / 2;
         for (let i2 = 0; i2 < count; i2++) {
+          const slitX = pickCurrentSlit();
           const xWorld = sampleScreenX();
           const xCanvas = Math.round((xWorld + halfW) / params.screenWidth * w);
-          const yCanvas = h2 / 2 + (Math.random() - 0.5) * h2 * 0.05;
-          const radius = 2;
-          const g = ctx.createRadialGradient(xCanvas, yCanvas, 0, xCanvas, yCanvas, radius * 2.5);
+          const yCanvas = h2 / 2 + (Math.random() - 0.5) * h2 * 0.01;
+          const radius = 1;
+          const g = ctx.createRadialGradient(xCanvas, yCanvas, 0, xCanvas, yCanvas, radius * 2);
           g.addColorStop(0, "rgba(120,200,255,0.9)");
           g.addColorStop(1, "rgba(120,200,255,0)");
           ctx.fillStyle = g;
@@ -21517,6 +21828,7 @@ var Sim = (() => {
           ctx.arc(xCanvas, yCanvas, radius * (0.5 + Math.random()), 0, Math.PI * 2);
           ctx.fill();
           spawnHitFlash(xWorld);
+          spawnParticleTrail(slitX, xWorld);
         }
         hitTexture.needsUpdate = true;
       }
@@ -21528,6 +21840,8 @@ var Sim = (() => {
         hitTexture.needsUpdate = true;
         hitSprites.forEach((s2) => scene.remove(s2.mesh));
         hitSprites = [];
+        trails.forEach((t2) => scene.remove(t2.mesh));
+        trails = [];
       }
       function moveExistingHitMarkers() {
         if (!hitSprites.length) return;
@@ -21542,6 +21856,30 @@ var Sim = (() => {
           }
         });
       }
+      function pickCurrentSlit() {
+        if (openSlitPositions.length) {
+          if (params.slitMaskMode === "all") {
+            const idx = Math.floor(Math.random() * openSlitPositions.length);
+            return openSlitPositions[idx];
+          }
+          return openSlitPositions[0];
+        }
+        const positions = computeSlitPositions();
+        return positions[Math.floor(Math.random() * positions.length)];
+      }
+      function spawnParticleTrail(slitX, hitX) {
+        if (!params.showTrails || !trailMaterial) return;
+        const points = [
+          new Vector3(0, 0, 0),
+          new Vector3(slitX, 0, params.slitPlaneZ),
+          new Vector3(hitX, 0, params.screenZ)
+        ];
+        const geo = new BufferGeometry().setFromPoints(points);
+        const line = new Line(geo, trailMaterial.clone());
+        line.frustumCulled = false;
+        scene.add(line);
+        trails.push({ mesh: line, life: 0, maxLife: 1.8 });
+      }
       function setupGui() {
         const gui = new lil_gui_esm_min_default({ title: "Controls", width: 320 });
         const fWave = gui.addFolder("Wave / Source");
@@ -21553,10 +21891,20 @@ var Sim = (() => {
         fWave.add(params, "emissionPerSpeed", 1, 200, 1).name("Emission per speed").onChange(() => {
           params.derivedEmission = currentEmissionRate();
         });
-        fWave.add(params, "showField");
+        fWave.add(params, "mode", { Wave: "wave", Particle: "particle" }).name("Mode").onChange(onModeChange);
+        fWave.add(params, "showField").listen();
         const fSlits = gui.addFolder("Slits / Wall");
+        const activeCtrl = fSlits.add(params, "activeSlit", 0, 5, 1).name("Active slit");
+        fSlits.add(params, "slitCount", 1, 6, 1).name("Number of slits").onChange(() => {
+          params.activeSlit = Math.min(params.activeSlit, params.slitCount - 1);
+          activeCtrl.max(Math.max(0, params.slitCount - 1));
+          onParamsChange();
+        });
         fSlits.add(params, "slitSeparation", 0.4, 6, 0.01).onChange(onParamsChange);
         fSlits.add(params, "slitWidth", 0.05, 0.8, 0.01).onChange(onParamsChange);
+        fSlits.add(params, "slitMaskMode", { "All open": "all", "Single slit": "single", Cycle: "cycle" }).name("Mask mode").onChange(onParamsChange);
+        activeCtrl.onChange(onParamsChange);
+        fSlits.add(params, "cyclePeriod", 0.5, 10, 0.1).name("Cycle period (s)").onChange(onParamsChange);
         fSlits.add(params, "slitPlaneZ", 2, 12, 0.1).onChange(onGeometryChange);
         fSlits.add(params, "showWall").name("Show wall").onChange((v) => wall.visible = v);
         const fDetector = gui.addFolder("Detector");
@@ -21572,6 +21920,7 @@ var Sim = (() => {
             hitSprites = [];
           }
         });
+        fDetector.add(params, "showTrails").name("Show particle trails");
         fDetector.add(params, "resetDetections").name("Reset hits");
         const fView = gui.addFolder("Camera / Playback");
         fView.add(params, "autoRotate").name("Auto rotate");
@@ -21585,17 +21934,23 @@ var Sim = (() => {
         fView.open();
       }
       function onParamsChange() {
-        buildWall();
-        rebuildDistribution();
+        updateSlitMask(simTime, true);
         clearHits();
       }
       function onGeometryChange() {
         params.detectorOffset = params.screenZ - params.slitPlaneZ;
-        buildWall();
+        updateSlitMask(simTime, true);
         buildScreen();
         buildField();
         clearHits();
         moveExistingHitMarkers();
+        controls.target.set(0, 0, params.slitPlaneZ);
+        controls.update();
+      }
+      function onModeChange() {
+        params.showField = params.mode === "wave" ? params.showField : false;
+        rebuildDistribution();
+        clearHits();
       }
       function setCameraPreset(name) {
         params.view = name;
@@ -21607,13 +21962,13 @@ var Sim = (() => {
         } else {
           camera.position.set(8, 7, 18);
         }
-        controls.target.set(0, 1.5, params.screenZ * 0.6);
         controls.update();
       }
       function animate() {
         requestAnimationFrame(animate);
         const dt = params.paused ? 0 : clock.getDelta();
         simTime += dt;
+        updateSlitMask(simTime, false);
         controls.autoRotate = params.autoRotate;
         controls.update();
         updateField(simTime);

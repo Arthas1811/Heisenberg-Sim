@@ -32,6 +32,10 @@ const params = {
   wavelength: 0.6, // world units
   slitSeparation: 3,
   slitWidth: 0.25,
+  slitCount: 2,
+  slitMaskMode: 'all', // 'all' | 'single' | 'cycle'
+  activeSlit: 0,
+  cyclePeriod: 2.5,
   slitPlaneZ: 5,
   screenZ: 12.5,
   screenWidth: 22,
@@ -40,10 +44,12 @@ const params = {
   waveSpeed: 0.5,
   emissionPerSpeed: 20, // photons per second per unit speed
   derivedEmission: 0,
+  mode: 'wave', // 'wave' | 'particle'
   autoRotate: false,
   showField: true,
   showWall: true,
   showIndicators: true,
+  showTrails: true,
   paused: false,
   resetDetections: () => resetHits(),
   resetCamera: () => setCameraPreset('threeQuarter'),
@@ -63,6 +69,12 @@ let hitSprites = [];
 let hitSpriteMaterial;
 let hitBarMaterial;
 let simTime = 0;
+let slitPositions = [];
+let openSlitIndices = [];
+let openSlitPositions = [];
+let lastMaskSignature = '';
+let trails = [];
+let trailMaterial;
 
 function currentEmissionRate() {
   return params.emissionPerSpeed * params.waveSpeed;
@@ -82,7 +94,8 @@ function init() {
   addSource();
   makeHitSpriteMaterial();
   makeHitBarMaterial();
-  buildWall();
+  makeTrailMaterial();
+  updateSlitMask(0, true);
   buildScreen();
   buildField();
   setupGui();
@@ -142,21 +155,50 @@ function addSource() {
 
 function buildWall() {
   if (wall) scene.remove(wall);
-  const wallWidth = Math.max(params.screenWidth, params.slitSeparation * 2 + 4, 8);
+  const span = Math.max(2, (params.slitCount - 1) * params.slitSeparation + params.slitWidth);
+  const wallWidth = Math.max(params.screenWidth, span + 4, 8);
   const wallHeight = 6;
-  const geo = new THREE.PlaneGeometry(wallWidth, wallHeight, 1, 1);
+  const wallThickness = 0.8;
+  const blocks = new THREE.Group();
+  const color = 0x202a3a;
+  const slitHeight = wallHeight * 0.85;
+  const capHeight = (wallHeight - slitHeight) / 2;
 
-  const alphaTex = makeSlitAlphaTexture(wallWidth, wallHeight);
-  const mat = new THREE.MeshBasicMaterial({
-    color: 0x1c2434,
-    opacity: 0.92,
-    transparent: true,
-    alphaMap: alphaTex,
-    side: THREE.DoubleSide,
-  });
-  wall = new THREE.Mesh(geo, mat);
+  const positions = computeSlitPositions();
+  const openings = openSlitPositions.length ? openSlitPositions : positions;
+  const halfW = wallWidth / 2;
+  let cursor = -halfW;
+
+  const makeBlock = (xStart, xEnd, yCenter, h) => {
+    const width = xEnd - xStart;
+    if (width <= 0.02 || h <= 0.02) return;
+    const geo = new THREE.BoxGeometry(width, h, wallThickness);
+    const mat = new THREE.MeshStandardMaterial({
+      color,
+      metalness: 0.05,
+      roughness: 0.65,
+    });
+    const mesh = new THREE.Mesh(geo, mat);
+    mesh.position.set((xStart + xEnd) / 2, yCenter, 0);
+    blocks.add(mesh);
+  };
+
+  // top and bottom caps (solid)
+  makeBlock(-halfW, halfW, (slitHeight / 2) + capHeight / 2, capHeight);
+  makeBlock(-halfW, halfW, -(slitHeight / 2) - capHeight / 2, capHeight);
+
+  // segments between openings within slit-height band
+  openings
+    .map(x => ({ start: x - params.slitWidth / 2, end: x + params.slitWidth / 2 }))
+    .sort((a, b) => a.start - b.start)
+    .forEach(open => {
+      makeBlock(cursor, open.start, 0, slitHeight);
+      cursor = open.end;
+    });
+  makeBlock(cursor, halfW, 0, slitHeight);
+
+  wall = blocks;
   wall.position.z = params.slitPlaneZ;
-  wall.renderOrder = 0;
   scene.add(wall);
 }
 
@@ -169,7 +211,6 @@ function makeSlitAlphaTexture(width, height) {
   ctx.fillRect(0, 0, c.width, c.height);
 
   const slitWidthPx = (params.slitWidth / width) * c.width;
-  const slitSepPx = (params.slitSeparation / width) * c.width;
   const midX = c.width / 2;
   const midY = c.height / 2;
   const slitHeight = c.height * 0.9;
@@ -177,18 +218,17 @@ function makeSlitAlphaTexture(width, height) {
   ctx.globalCompositeOperation = 'destination-out';
   ctx.fillStyle = 'black';
 
-  ctx.fillRect(
-    midX - slitSepPx / 2 - slitWidthPx / 2,
-    midY - slitHeight / 2,
-    slitWidthPx,
-    slitHeight
-  );
-  ctx.fillRect(
-    midX + slitSepPx / 2 - slitWidthPx / 2,
-    midY - slitHeight / 2,
-    slitWidthPx,
-    slitHeight
-  );
+  const positions = computeSlitPositions();
+  openSlitIndices.forEach(idx => {
+    const xPos = positions[idx];
+    const px = (xPos / width) * c.width;
+    ctx.fillRect(
+      midX + px - slitWidthPx / 2,
+      midY - slitHeight / 2,
+      slitWidthPx,
+      slitHeight
+    );
+  });
 
   const tex = new THREE.CanvasTexture(c);
   tex.wrapS = tex.wrapT = THREE.ClampToEdgeWrapping;
@@ -252,7 +292,8 @@ function getScreenHeight() {
 
 function buildField() {
   if (field) scene.remove(field.mesh);
-  const width = Math.max(params.screenWidth, params.slitSeparation * 2 + 4);
+  const span = Math.max(2, (params.slitCount - 1) * params.slitSeparation + params.slitWidth);
+  const width = Math.max(params.screenWidth, span + 4);
   const zStart = 0;
   const depth = Math.max(params.screenZ - zStart, 0.1);
   const segX = 96;
@@ -342,10 +383,21 @@ function makeHitBarMaterial() {
   });
 }
 
+function makeTrailMaterial() {
+  trailMaterial = new THREE.LineBasicMaterial({
+    color: 0xffd27f,
+    transparent: true,
+    opacity: 0.7,
+    depthWrite: false,
+    depthTest: true,
+    blending: THREE.AdditiveBlending,
+  });
+}
+
 function spawnHitFlash(x) {
   if (!hitSpriteMaterial || !params.showIndicators) return;
   const sprite = new THREE.Sprite(hitSpriteMaterial.clone());
-  sprite.scale.set(0.7, 0.7, 0.7);
+  sprite.scale.set(0.5, 0.5, 0.5);
   sprite.position.set(x, 0, params.screenZ + 0.002);
   sprite.material.opacity = 1;
   scene.add(sprite);
@@ -388,6 +440,17 @@ function updateHitFlashes(dt) {
     if (!keep) scene.remove(h.mesh);
     return keep;
   });
+
+  // trails
+  if (trails.length) {
+    for (const tr of trails) {
+      tr.life += dt;
+      const t = tr.maxLife > 0 ? tr.life / tr.maxLife : 1;
+      tr.mesh.material.opacity = Math.max(0, 1 - t);
+      if (tr.mesh.material.opacity <= 0) scene.remove(tr.mesh);
+    }
+    trails = trails.filter(tr => tr.life < tr.maxLife);
+  }
 }
 
 // ----- Simulation math ----------------------------------------------------
@@ -404,6 +467,40 @@ function softClamp(v, limit = 2.0) {
   return Math.tanh(v / limit) * limit;
 }
 
+function computeSlitPositions() {
+  const n = Math.max(1, Math.round(params.slitCount));
+  const d = params.slitSeparation;
+  const start = -((n - 1) / 2) * d;
+  const arr = [];
+  for (let i = 0; i < n; i++) {
+    arr.push(start + i * d);
+  }
+  slitPositions = arr;
+  return arr;
+}
+
+function updateSlitMask(time, force = false) {
+  const positions = computeSlitPositions();
+  let openIdx = [];
+  if (params.slitMaskMode === 'single') {
+    const idx = Math.max(0, Math.min(positions.length - 1, Math.round(params.activeSlit)));
+    openIdx = [idx];
+  } else if (params.slitMaskMode === 'cycle') {
+    const idx = Math.max(0, Math.min(positions.length - 1, Math.floor(time / Math.max(0.1, params.cyclePeriod)) % positions.length));
+    openIdx = [idx];
+  } else {
+    openIdx = positions.map((_, i) => i);
+  }
+  openSlitIndices = openIdx;
+  openSlitPositions = openIdx.map(i => positions[i]);
+  const sig = openSlitIndices.join(',');
+  if (force || sig !== lastMaskSignature) {
+    lastMaskSignature = sig;
+    buildWall();
+    rebuildDistribution();
+  }
+}
+
 function amplitudeAtPoint(x, z, t) {
   const k = waveNumber();
   const omega = angularFrequency();
@@ -414,7 +511,7 @@ function amplitudeAtPoint(x, z, t) {
     return softClamp(Math.sin(phase) / Math.max(r, 0.15));
   }
   const slitZ = params.slitPlaneZ;
-  const slits = [-params.slitSeparation / 2, params.slitSeparation / 2];
+  const slits = openSlitPositions.length ? openSlitPositions : computeSlitPositions();
   let amp = 0;
   for (const sx of slits) {
     const rSource = Math.hypot(sx - source.x, slitZ - source.z);
@@ -427,20 +524,50 @@ function amplitudeAtPoint(x, z, t) {
 }
 
 function intensityAtScreenX(x) {
-  // time-averaged intensity using two-path interference with finite slit width envelope
+  // time-averaged intensity using N-path interference with finite slit width envelope
   const L = Math.max(params.screenZ - params.slitPlaneZ, 0.001);
   const k = waveNumber();
-  const d = params.slitSeparation;
   const a = params.slitWidth;
-  const r1 = Math.sqrt(Math.pow(x + d / 2, 2) + L * L);
-  const r2 = Math.sqrt(Math.pow(x - d / 2, 2) + L * L);
-
+  const slits = openSlitPositions.length ? openSlitPositions : computeSlitPositions();
+  if (!slits.length) return 0;
+  let real = 0;
+  let imag = 0;
+  for (const s of slits) {
+    const r = Math.sqrt(Math.pow(x - s, 2) + L * L);
+    real += Math.cos(k * r) / r;
+    imag += Math.sin(k * r) / r;
+  }
   const single = singleSlitEnvelope(x, a, L);
-  const I =
-    0.5 / (r1 * r1) +
-    0.5 / (r2 * r2) +
-    (1 / (r1 * r2)) * Math.cos(k * (r1 - r2));
-  return Math.max(I * single, 0);
+  const I = (real * real + imag * imag) * single;
+  return Math.max(I, 0);
+}
+
+function particleIntensityAtScreenX(x) {
+  // classical particles: straight trajectories; approximate as Gaussians centered at each slit
+  const sigma = Math.max(0.1, params.slitWidth * 0.35);
+  const slits = openSlitPositions.length ? openSlitPositions : computeSlitPositions();
+  if (!slits.length) return 0;
+  let sum = 0;
+  for (const s of slits) {
+    const dx = x - s;
+    sum += Math.exp(-0.5 * (dx * dx) / (sigma * sigma));
+  }
+  return sum;
+}
+
+function randn() {
+  let u = 0, v = 0;
+  while (u === 0) u = Math.random();
+  while (v === 0) v = Math.random();
+  return Math.sqrt(-2.0 * Math.log(u)) * Math.cos(2.0 * Math.PI * v);
+}
+
+function sampleParticleX() {
+  const slits = openSlitPositions.length ? openSlitPositions : computeSlitPositions();
+  if (!slits.length) return 0;
+  const s = slits[Math.floor(Math.random() * slits.length)];
+  const sigma = Math.max(0.1, params.slitWidth * 0.35);
+  return s + randn() * sigma;
 }
 
 function singleSlitEnvelope(x, a, L) {
@@ -461,7 +588,7 @@ function rebuildDistribution() {
   let sum = 0;
   for (let i = 0; i < samples; i++) {
     const x = -halfW + (i / (samples - 1)) * (params.screenWidth);
-    const val = intensityAtScreenX(x);
+    const val = params.mode === 'particle' ? particleIntensityAtScreenX(x) : intensityAtScreenX(x);
     distribution[i] = val;
     sum += val;
   }
@@ -479,6 +606,7 @@ function rebuildDistribution() {
 }
 
 function sampleScreenX() {
+  if (params.mode === 'particle') return sampleParticleX();
   const r = Math.random();
   let low = 0;
   let high = cumulative.length - 1;
@@ -495,8 +623,8 @@ function sampleScreenX() {
 
 function updateField(time) {
   if (!field) return;
-  field.mesh.visible = params.showField;
-  if (!params.showField) return;
+  field.mesh.visible = params.showField && params.mode === 'wave';
+  if (!field.mesh.visible) return;
 
   const pos = field.geo.getAttribute('position');
   const col = field.geo.getAttribute('color');
@@ -535,12 +663,13 @@ function emitPhotons(dt) {
   const h = ctx.canvas.height;
   const halfW = params.screenWidth / 2;
   for (let i = 0; i < count; i++) {
+    const slitX = pickCurrentSlit();
     const xWorld = sampleScreenX();
     const xCanvas = Math.round(((xWorld + halfW) / (params.screenWidth)) * w);
-    const yCanvas = h / 2 + (Math.random() - 0.5) * h * 0.05;
+    const yCanvas = h / 2 + (Math.random() - 0.5) * h * 0.01;
 
-    const radius = 2;
-    const g = ctx.createRadialGradient(xCanvas, yCanvas, 0, xCanvas, yCanvas, radius * 2.5);
+    const radius = 1;
+    const g = ctx.createRadialGradient(xCanvas, yCanvas, 0, xCanvas, yCanvas, radius * 2.0);
     g.addColorStop(0, 'rgba(120,200,255,0.9)');
     g.addColorStop(1, 'rgba(120,200,255,0)');
     ctx.fillStyle = g;
@@ -550,6 +679,7 @@ function emitPhotons(dt) {
     ctx.fill();
 
     spawnHitFlash(xWorld);
+    spawnParticleTrail(slitX, xWorld);
   }
   hitTexture.needsUpdate = true;
 }
@@ -563,6 +693,8 @@ function clearHits() {
   hitTexture.needsUpdate = true;
   hitSprites.forEach(s => scene.remove(s.mesh));
   hitSprites = [];
+  trails.forEach(t => scene.remove(t.mesh));
+  trails = [];
 }
 
 function moveExistingHitMarkers() {
@@ -577,6 +709,32 @@ function moveExistingHitMarkers() {
       h.mesh.position.z = params.screenZ + 0.002;
     }
   });
+}
+
+function pickCurrentSlit() {
+  if (openSlitPositions.length) {
+    if (params.slitMaskMode === 'all') {
+      const idx = Math.floor(Math.random() * openSlitPositions.length);
+      return openSlitPositions[idx];
+    }
+    return openSlitPositions[0];
+  }
+  const positions = computeSlitPositions();
+  return positions[Math.floor(Math.random() * positions.length)];
+}
+
+function spawnParticleTrail(slitX, hitX) {
+  if (!params.showTrails || !trailMaterial) return;
+  const points = [
+    new THREE.Vector3(0, 0, 0),
+    new THREE.Vector3(slitX, 0, params.slitPlaneZ),
+    new THREE.Vector3(hitX, 0, params.screenZ),
+  ];
+  const geo = new THREE.BufferGeometry().setFromPoints(points);
+  const line = new THREE.Line(geo, trailMaterial.clone());
+  line.frustumCulled = false;
+  scene.add(line);
+  trails.push({ mesh: line, life: 0, maxLife: 1.8 });
 }
 
 // ----- GUI ---------------------------------------------------------------
@@ -596,11 +754,31 @@ function setupGui() {
     .onChange(() => {
       params.derivedEmission = currentEmissionRate();
     });
-  fWave.add(params, 'showField');
+  fWave
+    .add(params, 'mode', { Wave: 'wave', Particle: 'particle' })
+    .name('Mode')
+    .onChange(onModeChange);
+  fWave.add(params, 'showField').listen();
 
   const fSlits = gui.addFolder('Slits / Wall');
+  const activeCtrl = fSlits.add(params, 'activeSlit', 0, 5, 1).name('Active slit');
+  fSlits
+    .add(params, 'slitCount', 1, 6, 1)
+    .name('Number of slits')
+    .onChange(() => {
+      params.activeSlit = Math.min(params.activeSlit, params.slitCount - 1);
+      activeCtrl.max(Math.max(0, params.slitCount - 1));
+      onParamsChange();
+    });
   fSlits.add(params, 'slitSeparation', 0.4, 6, 0.01).onChange(onParamsChange);
   fSlits.add(params, 'slitWidth', 0.05, 0.8, 0.01).onChange(onParamsChange);
+  fSlits
+    .add(params, 'slitMaskMode', { 'All open': 'all', 'Single slit': 'single', Cycle: 'cycle' })
+    .name('Mask mode')
+    .onChange(onParamsChange);
+  activeCtrl
+    .onChange(onParamsChange);
+  fSlits.add(params, 'cyclePeriod', 0.5, 10, 0.1).name('Cycle period (s)').onChange(onParamsChange);
   fSlits.add(params, 'slitPlaneZ', 2, 12, 0.1).onChange(onGeometryChange);
   fSlits.add(params, 'showWall').name('Show wall').onChange(v => (wall.visible = v));
 
@@ -622,6 +800,7 @@ function setupGui() {
         hitSprites = [];
       }
     });
+  fDetector.add(params, 'showTrails').name('Show particle trails');
   fDetector.add(params, 'resetDetections').name('Reset hits');
 
   const fView = gui.addFolder('Camera / Playback');
@@ -641,18 +820,25 @@ function setupGui() {
 }
 
 function onParamsChange() {
-  buildWall();
-  rebuildDistribution();
+  updateSlitMask(simTime, true);
   clearHits();
 }
 
 function onGeometryChange() {
   params.detectorOffset = params.screenZ - params.slitPlaneZ;
-  buildWall();
+  updateSlitMask(simTime, true);
   buildScreen();
   buildField();
   clearHits();
   moveExistingHitMarkers();
+  controls.target.set(0, 0, params.slitPlaneZ);
+  controls.update();
+}
+
+function onModeChange() {
+  params.showField = params.mode === 'wave' ? params.showField : false;
+  rebuildDistribution();
+  clearHits();
 }
 
 function setCameraPreset(name) {
@@ -665,7 +851,6 @@ function setCameraPreset(name) {
   } else {
     camera.position.set(8, 7, 18);
   }
-  controls.target.set(0, 1.5, params.screenZ * 0.6)
   controls.update();
 }
 
@@ -675,6 +860,7 @@ function animate() {
   requestAnimationFrame(animate);
   const dt = params.paused ? 0 : clock.getDelta();
   simTime += dt;
+  updateSlitMask(simTime, false);
   controls.autoRotate = params.autoRotate;
   controls.update();
   updateField(simTime);
