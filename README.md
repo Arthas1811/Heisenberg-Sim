@@ -8,7 +8,7 @@ This simulation allows you to compare two fundamentally different physical scena
 
 - **Wave Mode**: Demonstrates the actual double slit experiment with waves. Light or matter waves spread out and interfere with themselves. When two slits are open, waves from both slits overlap and interact, creating an interference pattern with bright and dark bands on the detection screen.
 
-- **Particle Mode**: Shows a classical mechanics comparison—imagine shooting solid balls through the slits instead of waves. Classical particles travel in straight lines and go through one slit or the other (not both). This produces a simple additive pattern without any interference effects.
+- **Particle Mode**: Shows a classical mechanics comparison - imagine shooting solid balls through the slits instead of waves. Classical particles travel in straight lines and go through one slit or the other (not both). This produces a simple additive pattern without any interference effects.
 
 By comparing these two modes, you can visualize why the quantum double slit experiment is so remarkable: in reality, quantum objects exhibit wave-like behavior, but classical objects would behave like particles.
 
@@ -16,7 +16,7 @@ By comparing these two modes, you can visualize why the quantum double slit expe
 
 - **Interactive 3D Visualization**: Explore the experiment from multiple angles with intuitive camera controls
 - **Flexible Configurations**:
-  - Single or double slit setups
+  - Single, double, or triple (up to six) slit setups
   - Adjustable slit width and separation
   - Configurable wavelength and observer distance
 - **Real-time Parameter Control**: Adjust experiment parameters via interactive GUI menu
@@ -32,6 +32,14 @@ By comparing these two modes, you can visualize why the quantum double slit expe
 ### Interference Pattern
 ![Double Slit Interference](Screenshots/Double_Slit_Interference.png)
 *The resulting interference pattern from double slit setup*
+
+### Triple Slit Waves
+![Triple Slit Waves](Screenshots/Tripple_Slit_Waves.png)
+*Three-slit wave interference with richer fringe structure*
+
+### Triple Slit Interference
+![Triple Slit Interference](Screenshots/Tripple_Slit_Interference.png)
+*Detector intensity pattern from three slits*
 
 ### Single Slit Waves
 ![Single Slit Waves](Screenshots/Single_Slit_Waves.png)
@@ -90,7 +98,7 @@ If you want to build the project or have a local development server:
 - **Right Click + Drag**: Pan the view
 
 **Overlay Hint:**
-- The hint at the top of the screen indicates: "Use mouse to orbit/zoom · Menu to tweak parameters · Hit 'Reset' after large changes"
+- The hint at the top of the screen indicates: "Use mouse to orbit/zoom - Menu to tweak parameters - Hit 'Reset' after large changes"
 
 ### GUI Menu
 
@@ -100,7 +108,7 @@ Click on the menu icon or press the GUI button to open the control panel with th
 - **Wavelength**: Adjust the wavelength of the waves (affects interference pattern spacing)
 - **Slit Separation**: Control the distance between slits
 - **Slit Width**: Adjust the physical width of each slit
-- **Slit Count**: Choose between 1 or 2 slits
+- **Slit Count**: Choose between 1 and 6 slits (single, double, triple, etc.)
 - **Slit Mask Mode**: 
   - `All`: Both slits open simultaneously
   - `Single`: Only one slit open at a time
@@ -158,16 +166,16 @@ Click on the menu icon or press the GUI button to open the control panel with th
 
 ```
 Double-Slit-Sim/
-├── index.html          # Main HTML page
-├── main.js             # Core simulation logic
-├── bundle.js           # Bundled JavaScript (generated)
-├── style.css           # Styling and layout
-├── package.json        # Project dependencies
-└── vendor/
-    ├── three.min.js    # Three.js library (minified)
-    ├── three.module.js # Three.js module version
-    ├── OrbitControls.js # Camera control system
-    └── lil-gui.esm.min.js # GUI library
+  index.html           # Main HTML page
+  main.js              # Core simulation logic
+  bundle.js            # Bundled JavaScript (generated)
+  style.css            # Styling and layout
+  package.json         # Project dependencies
+  vendor/
+    three.min.js       # Three.js library (minified)
+    three.module.js    # Three.js module version
+    OrbitControls.js   # Camera control system
+    lil-gui.esm.min.js # GUI library
 ```
 
 ## Interactive Learning

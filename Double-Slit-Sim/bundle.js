@@ -21379,7 +21379,8 @@ var Sim = (() => {
           const v = Math.random();
           const theta = 2 * Math.PI * u2;
           const phi = Math.acos(2 * v - 1);
-          const r2 = radius * Math.cbrt(Math.random());
+          const minRadius = radius * 0.85;
+          const r2 = minRadius + Math.random() * (radius - minRadius);
           const sinPhi = Math.sin(phi);
           arr.push(
             r2 * sinPhi * Math.cos(theta),
@@ -21414,7 +21415,7 @@ var Sim = (() => {
         const wallHeight = 6;
         const wallThickness = WALL_THICKNESS;
         const blocks = new Group();
-        const color = 9085896;
+        const color = 2780840;
         const slitHeight = wallHeight * 0.85;
         const capHeight = (wallHeight - slitHeight) / 2;
         const positions = computeSlitPositions();
@@ -21464,7 +21465,7 @@ var Sim = (() => {
         clearHits();
         const geo = new PlaneGeometry(width, height, 1, 1);
         const baseMat = new MeshBasicMaterial({
-          color: 4176127,
+          color: 1912908,
           side: DoubleSide,
           depthWrite: true,
           depthTest: true
@@ -21479,7 +21480,7 @@ var Sim = (() => {
           side: DoubleSide,
           transparent: true,
           depthWrite: false,
-          depthTest: false,
+          depthTest: true,
           blending: AdditiveBlending,
           color: 16777215
         });
@@ -21562,7 +21563,7 @@ var Sim = (() => {
           map: tex,
           transparent: true,
           depthWrite: false,
-          depthTest: false,
+          depthTest: true,
           blending: AdditiveBlending,
           side: DoubleSide
         });
@@ -21575,7 +21576,7 @@ var Sim = (() => {
           blending: AdditiveBlending,
           depthWrite: false,
           side: DoubleSide,
-          depthTest: false
+          depthTest: true
         });
       }
       function makeTrailMaterial() {
@@ -21590,24 +21591,30 @@ var Sim = (() => {
       }
       function spawnHitFlash(x) {
         if (!hitSpriteMaterial || !params.showIndicators) return;
-        const sprite = new Sprite(hitSpriteMaterial.clone());
-        sprite.scale.set(0.5, 0.5, 0.5);
-        sprite.position.set(x, 0, params.screenZ + 2e-3);
-        sprite.material.opacity = 1;
-        scene.add(sprite);
-        hitSprites.push({ mesh: sprite, life: 0, maxLife: 2.4 });
-        if (hitBarMaterial) {
-          const h2 = getScreenHeight();
-          const bar = new Mesh(
-            new PlaneGeometry(0.06, h2),
-            hitBarMaterial.clone()
-          );
-          bar.position.set(x, 0, params.screenZ + 1e-3);
-          bar.renderOrder = 1;
-          bar.userData.baseHeight = h2;
-          scene.add(bar);
-          hitSprites.push({ mesh: bar, life: 0, maxLife: 2.4, isBar: true });
-        }
+        const addSide = (zOffset) => {
+          const sprite = new Sprite(hitSpriteMaterial.clone());
+          sprite.scale.set(0.5, 0.5, 0.5);
+          sprite.position.set(x, 0, params.screenZ + zOffset);
+          sprite.material.opacity = 1;
+          sprite.userData.zOffset = zOffset;
+          scene.add(sprite);
+          hitSprites.push({ mesh: sprite, life: 0, maxLife: 2.4 });
+          if (hitBarMaterial) {
+            const h2 = getScreenHeight();
+            const bar = new Mesh(
+              new PlaneGeometry(0.06, h2),
+              hitBarMaterial.clone()
+            );
+            bar.position.set(x, 0, params.screenZ + zOffset * 0.5);
+            bar.renderOrder = 1;
+            bar.userData.baseHeight = h2;
+            bar.userData.zOffset = zOffset * 0.5;
+            scene.add(bar);
+            hitSprites.push({ mesh: bar, life: 0, maxLife: 2.4, isBar: true });
+          }
+        };
+        addSide(2e-3);
+        addSide(-2e-3);
       }
       function updateHitFlashes(dt) {
         if (!hitSprites.length) return;
@@ -21616,12 +21623,13 @@ var Sim = (() => {
           const t2 = h2.maxLife > 0 ? h2.life / h2.maxLife : 1;
           const fade = Math.max(0, 1 - t2);
           h2.mesh.material.opacity = fade;
+          const zOffset = typeof h2.mesh.userData.zOffset === "number" ? h2.mesh.userData.zOffset : h2.isBar ? 1e-3 : 2e-3;
           if (!h2.isBar) {
             const s2 = 0.6 + 0.6 * t2;
             h2.mesh.scale.set(s2, s2, s2);
-            h2.mesh.position.z = params.screenZ + 2e-3;
+            h2.mesh.position.z = params.screenZ + zOffset;
           } else {
-            h2.mesh.position.z = params.screenZ + 1e-3;
+            h2.mesh.position.z = params.screenZ + zOffset;
             const screenHeight = getScreenHeight();
             const base = h2.mesh.userData.baseHeight || screenHeight;
             h2.mesh.scale.set(1, screenHeight / base, 1);
@@ -21888,9 +21896,11 @@ var Sim = (() => {
           if (h2.isBar) {
             const base = h2.mesh.userData.baseHeight || screenHeight;
             h2.mesh.scale.set(1, screenHeight / base, 1);
-            h2.mesh.position.z = params.screenZ + 1e-3;
+            const zOffset = typeof h2.mesh.userData.zOffset === "number" ? h2.mesh.userData.zOffset : 1e-3;
+            h2.mesh.position.z = params.screenZ + zOffset;
           } else {
-            h2.mesh.position.z = params.screenZ + 2e-3;
+            const zOffset = typeof h2.mesh.userData.zOffset === "number" ? h2.mesh.userData.zOffset : 2e-3;
+            h2.mesh.position.z = params.screenZ + zOffset;
           }
         });
       }

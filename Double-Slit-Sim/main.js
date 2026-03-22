@@ -128,7 +128,10 @@ function randomSpherePoints(count, radius) {
     const v = Math.random();
     const theta = 2 * Math.PI * u;
     const phi = Math.acos(2 * v - 1);
-    const r = radius * Math.cbrt(Math.random());
+    // Keep the starfield behind the experiment: sample only the outer shell
+    // so no stray "pixels" appear near the slits or detector.
+    const minRadius = radius * 0.85;
+    const r = minRadius + Math.random() * (radius - minRadius);
     const sinPhi = Math.sin(phi);
     arr.push(
       r * sinPhi * Math.cos(theta),
@@ -168,7 +171,7 @@ function buildWall() {
   // Keep the barrier visually thin so particle paths aren't hidden inside thick geometry.
   const wallThickness = WALL_THICKNESS;
   const blocks = new THREE.Group();
-  const color = 0x8aa3c8;
+  const color = 0x2a6ea8;
   const slitHeight = wallHeight * 0.85;
   const capHeight = (wallHeight - slitHeight) / 2;
 
@@ -266,7 +269,7 @@ function buildScreen() {
   const geo = new THREE.PlaneGeometry(width, height, 1, 1);
   // base plate (constant color)
   const baseMat = new THREE.MeshBasicMaterial({
-    color: 0x3fb8ff,
+    color: 0x1d304c,
     side: THREE.DoubleSide,
     depthWrite: true,
     depthTest: true,
@@ -283,7 +286,7 @@ function buildScreen() {
     side: THREE.DoubleSide,
     transparent: true,
     depthWrite: false,
-    depthTest: false,
+    depthTest: true,
     blending: THREE.AdditiveBlending,
     color: 0xffffff,
   });
@@ -379,7 +382,7 @@ function makeHitSpriteMaterial() {
     map: tex,
     transparent: true,
     depthWrite: false,
-    depthTest: false,
+    depthTest: true,
     blending: THREE.AdditiveBlending,
     side: THREE.DoubleSide,
   });
@@ -393,7 +396,7 @@ function makeHitBarMaterial() {
     blending: THREE.AdditiveBlending,
     depthWrite: false,
     side: THREE.DoubleSide,
-    depthTest: false,
+    depthTest: true,
   });
 }
 
@@ -410,25 +413,33 @@ function makeTrailMaterial() {
 
 function spawnHitFlash(x) {
   if (!hitSpriteMaterial || !params.showIndicators) return;
-  const sprite = new THREE.Sprite(hitSpriteMaterial.clone());
-  sprite.scale.set(0.5, 0.5, 0.5);
-  sprite.position.set(x, 0, params.screenZ + 0.002);
-  sprite.material.opacity = 1;
-  scene.add(sprite);
-  hitSprites.push({ mesh: sprite, life: 0, maxLife: 2.4 });
+  const addSide = (zOffset) => {
+    const sprite = new THREE.Sprite(hitSpriteMaterial.clone());
+    sprite.scale.set(0.5, 0.5, 0.5);
+    sprite.position.set(x, 0, params.screenZ + zOffset);
+    sprite.material.opacity = 1;
+    sprite.userData.zOffset = zOffset;
+    scene.add(sprite);
+    hitSprites.push({ mesh: sprite, life: 0, maxLife: 2.4 });
 
-  if (hitBarMaterial) {
-    const h = getScreenHeight(); // detector height
-    const bar = new THREE.Mesh(
-      new THREE.PlaneGeometry(0.06, h),
-      hitBarMaterial.clone()
-    );
-    bar.position.set(x, 0, params.screenZ + 0.001);
-    bar.renderOrder = 1;
-    bar.userData.baseHeight = h;
-    scene.add(bar);
-    hitSprites.push({ mesh: bar, life: 0, maxLife: 2.4, isBar: true });
-  }
+    if (hitBarMaterial) {
+      const h = getScreenHeight(); // detector height
+      const bar = new THREE.Mesh(
+        new THREE.PlaneGeometry(0.06, h),
+        hitBarMaterial.clone()
+      );
+      bar.position.set(x, 0, params.screenZ + (zOffset * 0.5));
+      bar.renderOrder = 1;
+      bar.userData.baseHeight = h;
+      bar.userData.zOffset = zOffset * 0.5;
+      scene.add(bar);
+      hitSprites.push({ mesh: bar, life: 0, maxLife: 2.4, isBar: true });
+    }
+  };
+
+  // Front and back sides of the detector
+  addSide(0.002);
+  addSide(-0.002);
 }
 
 function updateHitFlashes(dt) {
@@ -438,12 +449,15 @@ function updateHitFlashes(dt) {
     const t = h.maxLife > 0 ? h.life / h.maxLife : 1;
     const fade = Math.max(0, 1 - t);
     h.mesh.material.opacity = fade;
+    const zOffset = typeof h.mesh.userData.zOffset === 'number'
+      ? h.mesh.userData.zOffset
+      : (h.isBar ? 0.001 : 0.002);
     if (!h.isBar) {
       const s = 0.6 + 0.6 * t;
       h.mesh.scale.set(s, s, s);
-      h.mesh.position.z = params.screenZ + 0.002;
+      h.mesh.position.z = params.screenZ + zOffset;
     } else {
-      h.mesh.position.z = params.screenZ + 0.001;
+      h.mesh.position.z = params.screenZ + zOffset;
       const screenHeight = getScreenHeight();
       const base = h.mesh.userData.baseHeight || screenHeight;
       h.mesh.scale.set(1, screenHeight / base, 1);
@@ -757,9 +771,11 @@ function moveExistingHitMarkers() {
     if (h.isBar) {
       const base = h.mesh.userData.baseHeight || screenHeight;
       h.mesh.scale.set(1, screenHeight / base, 1);
-      h.mesh.position.z = params.screenZ + 0.001;
+      const zOffset = typeof h.mesh.userData.zOffset === 'number' ? h.mesh.userData.zOffset : 0.001;
+      h.mesh.position.z = params.screenZ + zOffset;
     } else {
-      h.mesh.position.z = params.screenZ + 0.002;
+      const zOffset = typeof h.mesh.userData.zOffset === 'number' ? h.mesh.userData.zOffset : 0.002;
+      h.mesh.position.z = params.screenZ + zOffset;
     }
   });
 }
