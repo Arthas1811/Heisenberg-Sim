@@ -1,27 +1,21 @@
 # Double Slit Experiment 3D Simulation
 
-An interactive 3D visualization of the famous double slit experiment from quantum mechanics, built with Three.js. This simulation allows you to explore how light and matter behave under different conditions, demonstrating the fundamental principles of quantum mechanics in an intuitive and visually engaging way.
+An interactive 3D visualization of the famous double slit experiment from quantum mechanics, built with Three.js. This simulation lets you explore how light and matter behave under different conditions, demonstrating the fundamentals of quantum mechanics in an intuitive way.
 
 ## Wave vs Particle Behavior
 
-This simulation allows you to compare two fundamentally different physical scenarios:
+This simulation contrasts two scenarios:
 
-- **Wave Mode**: Demonstrates the actual double slit experiment with waves. Light or matter waves spread out and interfere with themselves. When two slits are open, waves from both slits overlap and interact, creating an interference pattern with bright and dark bands on the detection screen.
-
-- **Particle Mode**: Shows a classical mechanics comparison - imagine shooting solid balls through the slits instead of waves. Classical particles travel in straight lines and go through one slit or the other (not both). This produces a simple additive pattern without any interference effects.
-
-By comparing these two modes, you can visualize why the quantum double slit experiment is so remarkable: in reality, quantum objects exhibit wave-like behavior, but classical objects would behave like particles.
+- **Wave Mode**: Light or matter waves spread out and interfere. With two slits open, overlapping waves form an interference pattern of bright and dark bands on the detection screen.
+- **Particle Mode**: Classical comparison. Particles travel in straight lines and pass through only one slit, producing a simple additive pattern without interference.
 
 ## Features
 
-- **Interactive 3D Visualization**: Explore the experiment from multiple angles with intuitive camera controls
-- **Flexible Configurations**:
-  - Single, double, or triple (up to six) slit setups
-  - Adjustable slit width and separation
-  - Configurable wavelength and observer distance
-- **Real-time Parameter Control**: Adjust experiment parameters via interactive GUI menu
-- **Customizable Visualization**: Toggle field display, detector markers, and particle trails
-- **Multiple Viewing Angles**: Preset camera positions for optimal observation
+- Interactive 3D visualization with orbit/pan/zoom
+- Single, double, or up to six slits; adjustable slit width and separation
+- Configurable wavelength, observer distance, emission rate, wave speed
+- Toggle field display, detector markers, particle trails
+- Preset camera angles
 
 ## Screenshots
 
@@ -31,7 +25,7 @@ By comparing these two modes, you can visualize why the quantum double slit expe
 
 ### Interference Pattern
 ![Double Slit Interference](../Screenshots/Double_Slit_Interference.png)
-*The resulting interference pattern from double slit setup*
+*Resulting interference pattern from a double slit setup*
 
 ### Triple Slit Waves
 ![Triple Slit Waves](../Screenshots/Tripple_Slit_Waves.png)
@@ -57,110 +51,100 @@ By comparing these two modes, you can visualize why the quantum double slit expe
 
 ### Installation
 
-#### Quick Start (Easiest Method)
+#### Quick Start (easiest)
+1. Download the repository as a ZIP and unzip it.
+2. Open the unzipped folder and go to `Double-Slit-Sim/`.
+3. Right-click `index.html` -> "Open with" -> your browser (Chrome/Firefox/Safari/Edge).
 
-1. Clone or download this repository
-2. Navigate to the `Double-Slit-Sim` folder
-3. Right-click on `index.html` and select "Open with your web browser" (Chrome, Firefox, Safari, or Edge)
+#### Developer Setup (build/server; includes git clone option)
+Use this if you want to rebuild `bundle.js` or run a local server.
 
-That's it! The simulation will load directly in your browser. No installation or programming experience needed.
-
-#### Developer Setup (For Building/Development)
-
-If you want to build the project or have a local development server:
-
-1. Clone or download this repository
-2. Navigate to the `Double-Slit-Sim` directory
-3. Install dependencies:
+1. Clone the repo (alternative to ZIP):
+   ```bash
+   git clone https://github.com/Arthas1811/Heisenberg-Sim.git
+   cd Heisenberg-Sim/Double-Slit-Sim
+   ```
+   If you downloaded the ZIP, open a terminal in the `Double-Slit-Sim` folder instead.
+2. Install dependencies (requires Node.js and npm):
    ```bash
    npm install
    ```
-
-4. Build the project:
+3. Build the project (regenerate `bundle.js` after edits):
    ```bash
    npm run build
    ```
-
-5. Start a local server:
+4. Start a local server (uses `http-server` from dev deps):
    ```bash
    npm start
    ```
-
-6. Open your browser and navigate to `http://localhost:8080`
+5. Open your browser to `http://localhost:8080`.
 
 ## How to Use
 
 ### Basic Controls
 
 **Mouse Controls:**
-- **Left Click + Drag**: Orbit the camera around the experiment
-- **Scroll**: Zoom in and out
-- **Right Click + Drag**: Pan the view
+- Left click + drag: orbit the camera
+- Scroll: zoom
+- Right click + drag: pan
 
-**Overlay Hint:**
-- The hint at the top of the screen indicates: "Use mouse to orbit/zoom - Menu to tweak parameters - Hit 'Reset' after large changes"
+**Overlay Hint:** "Use mouse to orbit/zoom - Menu to tweak parameters - Hit 'Reset' after large changes"
 
 ### GUI Menu
 
-Click on the menu icon or press the GUI button to open the control panel with the following options:
+Click the menu icon or press the GUI button to open controls:
 
 #### Experiment Parameters
-- **Wavelength**: Adjust the wavelength of the waves (affects interference pattern spacing)
-- **Slit Separation**: Control the distance between slits
-- **Slit Width**: Adjust the physical width of each slit
-- **Slit Count**: Choose between 1 and 6 slits (single, double, triple, etc.)
-- **Slit Mask Mode**: 
-  - `All`: Both slits open simultaneously
-  - `Single`: Only one slit open at a time
-  - `Cycle`: Automatically cycle between slits
+- **Wavelength**: change wavelength (affects fringe spacing)
+- **Slit Separation**: distance between slits
+- **Slit Width**: physical width of each slit
+- **Slit Count**: 1 to 6 slits
+- **Slit Mask Mode**: `All`, `Single`, or `Cycle`
 
 #### Detection & Display
-- **Mode**: Toggle between `wave` (wave propagation and interference) and `particle` (classical particle trajectories)
-- **Wave Speed**: Control the speed of wave propagation
-- **Emission Rate**: Adjust the rate of particle/wave emission
-- **Detector Offset**: Distance from slits to detection screen
+- **Mode**: `wave` or `particle`
+- **Wave Speed**
+- **Emission Rate**
+- **Detector Offset**
 
 #### Visualization Options
-- **Show Field**: Toggle the visible wave field representation
-- **Show Wall**: Toggle the slit barrier visualization
-- **Show Indicators**: Toggle detector marking indicators
-- **Show Trails**: Toggle particle trajectory trails
-- **Auto Rotate**: Automatically rotate the view
-- **Paused/Resume**: Pause and resume the simulation
+- **Show Field**, **Show Wall**, **Show Indicators**, **Show Trails**
+- **Auto Rotate**
+- **Paused/Resume**
 
 #### Camera & Reset
-- **View**: Quick preset camera angles (Three Quarter view recommended)
-- **Reset Detections**: Clear all accumulated particle hits
-- **Reset Camera**: Return to default camera position
+- **View** presets (Three Quarter recommended)
+- **Reset Detections**
+- **Reset Camera**
 
 ### Tips for Best Results
 
-1. **Start Simple**: Begin with the double slit in wave mode to see the classic interference pattern
-2. **Switch Modes**: Toggle between wave and particle modes to observe the quantum mechanical behavior change
-3. **Adjust Parameters Slowly**: Large changes may require clicking "Reset" to reinitialize
-4. **Observation Distance**: Use the detector offset to see how interference patterns change with distance
-5. **Multiple Angles**: Use the camera controls to view the experiment from different perspectives to better understand the 3D geometry
+1. Start with double slit in wave mode to see the classic pattern.
+2. Toggle between wave and particle modes to compare behaviors.
+3. After large changes, hit "Reset" to reinitialize.
+4. Adjust detector offset to see how distance changes the pattern.
+5. Use multiple camera angles to understand the 3D geometry.
 
 ### Experiment Ideas
 
-1. **Observe Wave Interference**: Run in wave mode and watch the interference pattern form
-2. **Single vs Double Slit**: Switch slit count to compare diffraction vs interference
-3. **Wavelength Effects**: Adjust wavelength to see how pattern spacing changes
-4. **Slit Width Impact**: Change slit width to observe how it affects the pattern
-5. **Particle by Particle**: Use particle mode with low emission rate to watch individual detections accumulate
-6. **Cycling Slits**: Use "Cycle" mode to observe what happens when slits are opened and closed sequentially
+1. Observe wave interference in wave mode.
+2. Compare single vs double slit (diffraction vs interference).
+3. Change wavelength to see fringe spacing shifts.
+4. Change slit width to see its effect.
+5. Use particle mode with low emission to watch detections accumulate.
+6. Use "Cycle" slit mode to see sequential opening and closing.
 
 ## Technical Details
 
 ### Built With
-- **Three.js**: 3D graphics rendering
-- **OrbitControls**: Interactive camera control
-- **lil-gui**: Intuitive parameter control interface
-- **ESBuild**: Module bundling
+- Three.js
+- OrbitControls
+- lil-gui
+- ESBuild
 
 ### System Requirements
 - Modern web browser with WebGL support
-- Recommended: 2GB RAM, dedicated graphics card for smooth animation
+- Recommended: 2 GB RAM and a dedicated GPU for smooth animation
 
 ## Files Structure
 
@@ -180,15 +164,15 @@ Double-Slit-Sim/
 
 ## Interactive Learning
 
-This simulation is ideal for:
-- Physics students learning about quantum mechanics and wave-particle duality
-- Understanding the famous double slit experiment at a visceral level
-- Exploring how observation affects quantum systems
-- Visualizing the mathematical principles of interference and diffraction
+Ideal for:
+- Physics students learning quantum mechanics and wave-particle duality
+- Understanding the double slit experiment at a visceral level
+- Exploring observation effects on quantum systems
+- Visualizing interference and diffraction
 
 ## Browser Compatibility
 
-- Chrome/Chromium (recommended for best performance)
+- Chrome/Chromium (recommended)
 - Firefox
 - Safari
 - Edge
@@ -199,11 +183,11 @@ ISC
 
 ## Notes
 
-- Hit "Reset" after making large parameter changes to reinitialize the simulation
-- The simulation runs in real-time; particle accumulation may take time depending on emission rate
-- For best performance, disable particle trails if running on lower-end hardware
-- Camera position is saved when changed and will persist across sections
+- Hit "Reset" after large parameter changes to reinitialize.
+- Particle accumulation may take time depending on emission rate.
+- For best performance on lower-end hardware, disable particle trails.
+- Camera position is saved when changed and persists across sections.
 
 ---
 
-**Enjoy exploring one of quantum mechanics' most fascinating phenomena!**
+Enjoy exploring one of quantum mechanics' most fascinating phenomena!
