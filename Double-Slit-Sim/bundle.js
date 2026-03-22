@@ -21258,6 +21258,10 @@ var Sim = (() => {
       init_three_module();
       init_OrbitControls();
       init_lil_gui_esm_min();
+      var WALL_THICKNESS = 0.2;
+      var SOURCE_RING_RADIUS = 0.35;
+      var SOURCE_RING_TUBE = 0.03;
+      var FIELD_BACK_EXTENT = 0.8;
       var canvas = document.getElementById("scene");
       var renderer = new WebGLRenderer({ canvas, antialias: true });
       renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
@@ -21296,13 +21300,13 @@ var Sim = (() => {
         // screenZ - slitPlaneZ
         amplitudeScale: 0.2,
         waveSpeed: 0.5,
-        emissionPerSpeed: 20,
+        emissionPerSpeed: 10,
         // photons per second per unit speed
         derivedEmission: 0,
-        mode: "wave",
+        mode: "particle",
         // 'wave' | 'particle'
         autoRotate: false,
-        showField: true,
+        showField: false,
         showWall: true,
         showIndicators: true,
         showTrails: true,
@@ -21311,6 +21315,8 @@ var Sim = (() => {
         resetCamera: () => setCameraPreset("threeQuarter"),
         pauseSim: () => params.paused = true,
         resumeSim: () => params.paused = false,
+        applyPresetBase: () => applyPreset("base"),
+        applyPresetOne: () => applyPreset("preset1"),
         view: "threeQuarter"
       };
       controls.target.set(0, 0, params.slitPlaneZ);
@@ -21395,7 +21401,7 @@ var Sim = (() => {
         emitter.position.copy(source);
         scene.add(emitter);
         const ring = new Mesh(
-          new TorusGeometry(0.35, 0.03, 8, 64),
+          new TorusGeometry(SOURCE_RING_RADIUS, SOURCE_RING_TUBE, 8, 64),
           new MeshBasicMaterial({ color: 7197183, transparent: true, opacity: 0.6 })
         );
         ring.rotation.x = Math.PI / 2;
@@ -21406,9 +21412,9 @@ var Sim = (() => {
         const span = Math.max(2, (params.slitCount - 1) * params.slitSeparation + params.slitWidth);
         const wallWidth = Math.max(params.screenWidth, span + 4, 8);
         const wallHeight = 6;
-        const wallThickness = 0.8;
+        const wallThickness = WALL_THICKNESS;
         const blocks = new Group();
-        const color = 2107962;
+        const color = 9085896;
         const slitHeight = wallHeight * 0.85;
         const capHeight = (wallHeight - slitHeight) / 2;
         const positions = computeSlitPositions();
@@ -21422,7 +21428,9 @@ var Sim = (() => {
           const mat = new MeshStandardMaterial({
             color,
             metalness: 0.05,
-            roughness: 0.65
+            roughness: 0.52,
+            emissive: 1978186,
+            emissiveIntensity: 0.32
           });
           const mesh = new Mesh(geo, mat);
           mesh.position.set((xStart + xEnd) / 2, yCenter, 0);
@@ -21456,7 +21464,7 @@ var Sim = (() => {
         clearHits();
         const geo = new PlaneGeometry(width, height, 1, 1);
         const baseMat = new MeshBasicMaterial({
-          color: 1450549,
+          color: 4176127,
           side: DoubleSide,
           depthWrite: true,
           depthTest: true
@@ -21489,7 +21497,7 @@ var Sim = (() => {
         if (field) scene.remove(field.mesh);
         const span = Math.max(2, (params.slitCount - 1) * params.slitSeparation + params.slitWidth);
         const width = Math.max(params.screenWidth, span + 4);
-        const zStart = 0;
+        const zStart = -FIELD_BACK_EXTENT;
         const depth = Math.max(params.screenZ - zStart, 0.1);
         const segX = 96;
         const segZ = 180;
@@ -21526,9 +21534,12 @@ var Sim = (() => {
           side: DoubleSide,
           vertexColors: true,
           transparent: true,
-          opacity: 0.9
+          opacity: 0.9,
+          // Write depth so trails behind the wave get occluded; renderOrder handles transparency sorting.
+          depthWrite: true
         });
         const mesh = new Mesh(geo, mat);
+        mesh.renderOrder = -1;
         mesh.castShadow = false;
         mesh.receiveShadow = false;
         scene.add(mesh);
@@ -21675,16 +21686,20 @@ var Sim = (() => {
       function amplitudeAtPoint(x, z, t2) {
         const k = waveNumber();
         const omega = angularFrequency();
+        const ringRadius = SOURCE_RING_RADIUS;
+        const ringTube = SOURCE_RING_TUBE;
         if (z <= params.slitPlaneZ - 0.05) {
           const r2 = Math.hypot(x - source.x, z - source.z);
-          const phase = k * r2 - omega * t2;
-          return softClamp(Math.sin(phase) / Math.max(r2, 0.15));
+          const effectiveR = Math.max(r2, ringRadius);
+          if (r2 < ringRadius - ringTube * 0.5) return 0;
+          const phase = k * (effectiveR - ringRadius) - omega * t2;
+          return softClamp(Math.sin(phase) / Math.max(effectiveR, 0.15));
         }
         const slitZ = params.slitPlaneZ;
         const slits = openSlitPositions.length ? openSlitPositions : computeSlitPositions();
         let amp = 0;
         for (const sx of slits) {
-          const rSource = Math.hypot(sx - source.x, slitZ - source.z);
+          const rSource = Math.max(Math.hypot(sx - source.x, slitZ - source.z) - ringRadius, 1e-4);
           const r2 = Math.hypot(x - sx, z - slitZ);
           const totalR = r2 + rSource;
           const phase = k * totalR - omega * t2;
@@ -21710,28 +21725,38 @@ var Sim = (() => {
         return Math.max(I, 0);
       }
       function particleIntensityAtScreenX(x) {
-        const sigma = Math.max(0.1, params.slitWidth * 0.35);
         const slits = openSlitPositions.length ? openSlitPositions : computeSlitPositions();
         if (!slits.length) return 0;
+        const toWall = params.slitPlaneZ / Math.max(params.screenZ, 1e-3);
+        const xAtSlit = x * toWall;
+        const half = params.slitWidth / 2;
+        const edgeMargin = Math.min(params.slitWidth * 0.25, 0.08);
+        const innerHalf = Math.max(half - edgeMargin, 0.01);
         let sum = 0;
         for (const s2 of slits) {
-          const dx = x - s2;
-          sum += Math.exp(-0.5 * (dx * dx) / (sigma * sigma));
+          const dx = xAtSlit - s2;
+          if (Math.abs(dx) <= innerHalf) {
+            const sigma = Math.max(0.04, innerHalf * 0.35);
+            sum += Math.exp(-0.5 * (dx * dx) / (sigma * sigma));
+          }
         }
         return sum;
       }
-      function randn() {
-        let u2 = 0, v = 0;
-        while (u2 === 0) u2 = Math.random();
-        while (v === 0) v = Math.random();
-        return Math.sqrt(-2 * Math.log(u2)) * Math.cos(2 * Math.PI * v);
-      }
-      function sampleParticleX() {
+      function sampleParticleHit() {
         const slits = openSlitPositions.length ? openSlitPositions : computeSlitPositions();
-        if (!slits.length) return 0;
-        const s2 = slits[Math.floor(Math.random() * slits.length)];
-        const sigma = Math.max(0.1, params.slitWidth * 0.35);
-        return s2 + randn() * sigma;
+        if (!slits.length) return null;
+        const ratio = params.screenZ / Math.max(params.slitPlaneZ, 1e-4);
+        const halfScreen = params.screenWidth / 2;
+        const edgeMargin = Math.min(params.slitWidth * 0.25, 0.08);
+        const usableWidth = Math.max(0.02, params.slitWidth - 2 * edgeMargin);
+        for (let attempt = 0; attempt < 20; attempt++) {
+          const center = slits[Math.floor(Math.random() * slits.length)];
+          const xAtSlit = center + (Math.random() - 0.5) * usableWidth;
+          const hitX = xAtSlit * ratio;
+          if (Math.abs(hitX) > halfScreen) continue;
+          return { slitX: xAtSlit, hitX };
+        }
+        return null;
       }
       function singleSlitEnvelope(x, a2, L) {
         const beta = Math.PI * a2 * x / (params.wavelength * L);
@@ -21764,7 +21789,10 @@ var Sim = (() => {
         }
       }
       function sampleScreenX() {
-        if (params.mode === "particle") return sampleParticleX();
+        if (params.mode === "particle") {
+          const hit = sampleParticleHit();
+          return hit ? hit.hitX : 0;
+        }
         const r2 = Math.random();
         let low = 0;
         let high = cumulative.length - 1;
@@ -21814,8 +21842,18 @@ var Sim = (() => {
         const h2 = ctx.canvas.height;
         const halfW = params.screenWidth / 2;
         for (let i2 = 0; i2 < count; i2++) {
-          const slitX = pickCurrentSlit();
-          const xWorld = sampleScreenX();
+          let hitX;
+          let slitX;
+          if (params.mode === "particle") {
+            const hit = sampleParticleHit();
+            if (!hit) continue;
+            hitX = hit.hitX;
+            slitX = hit.slitX;
+          } else {
+            hitX = sampleScreenX();
+            slitX = pickCurrentSlit();
+          }
+          const xWorld = hitX;
           const xCanvas = Math.round((xWorld + halfW) / params.screenWidth * w);
           const yCanvas = h2 / 2 + (Math.random() - 0.5) * h2 * 0.01;
           const radius = 1;
@@ -21828,7 +21866,7 @@ var Sim = (() => {
           ctx.arc(xCanvas, yCanvas, radius * (0.5 + Math.random()), 0, Math.PI * 2);
           ctx.fill();
           spawnHitFlash(xWorld);
-          spawnParticleTrail(slitX, xWorld);
+          spawnParticleTrail(xWorld, slitX);
         }
         hitTexture.needsUpdate = true;
       }
@@ -21867,11 +21905,13 @@ var Sim = (() => {
         const positions = computeSlitPositions();
         return positions[Math.floor(Math.random() * positions.length)];
       }
-      function spawnParticleTrail(slitX, hitX) {
+      function spawnParticleTrail(hitX, xAtSlit = null) {
         if (!params.showTrails || !trailMaterial) return;
+        const slitX = typeof xAtSlit === "number" ? xAtSlit : hitX * (params.slitPlaneZ / Math.max(params.screenZ, 1e-4));
+        const bendZ = params.slitPlaneZ + WALL_THICKNESS * 0.35;
         const points = [
           new Vector3(0, 0, 0),
-          new Vector3(slitX, 0, params.slitPlaneZ),
+          new Vector3(slitX, 0, bendZ),
           new Vector3(hitX, 0, params.screenZ)
         ];
         const geo = new BufferGeometry().setFromPoints(points);
@@ -21888,10 +21928,10 @@ var Sim = (() => {
         fWave.add(params, "waveSpeed", 0.2, 8, 0.05).onChange(() => {
           params.derivedEmission = currentEmissionRate();
         });
-        fWave.add(params, "emissionPerSpeed", 1, 200, 1).name("Emission per speed").onChange(() => {
+        fWave.add(params, "emissionPerSpeed", 0, 80, 1).name("Emission per speed").onChange(() => {
           params.derivedEmission = currentEmissionRate();
-        });
-        fWave.add(params, "mode", { Wave: "wave", Particle: "particle" }).name("Mode").onChange(onModeChange);
+        }).listen();
+        fWave.add(params, "mode", { Wave: "wave", Particle: "particle" }).name("Mode").onChange(onModeChange).listen();
         fWave.add(params, "showField").listen();
         const fSlits = gui.addFolder("Slits / Wall");
         const activeCtrl = fSlits.add(params, "activeSlit", 0, 5, 1).name("Active slit");
@@ -21922,6 +21962,9 @@ var Sim = (() => {
         });
         fDetector.add(params, "showTrails").name("Show particle trails");
         fDetector.add(params, "resetDetections").name("Reset hits");
+        const fPresets = gui.addFolder("Presets");
+        fPresets.add(params, "applyPresetBase").name("Preset: Base");
+        fPresets.add(params, "applyPresetOne").name("Preset One");
         const fView = gui.addFolder("Camera / Playback");
         fView.add(params, "autoRotate").name("Auto rotate");
         fView.add(params, "pauseSim").name("Pause");
@@ -21951,6 +21994,21 @@ var Sim = (() => {
         params.showField = params.mode === "wave" ? params.showField : false;
         rebuildDistribution();
         clearHits();
+      }
+      function applyPreset(name) {
+        if (name === "base") {
+          params.mode = "particle";
+          params.showField = false;
+          params.emissionPerSpeed = 10;
+        } else if (name === "preset1") {
+          params.mode = "wave";
+          params.showField = false;
+          params.emissionPerSpeed = 5;
+        } else {
+          return;
+        }
+        params.derivedEmission = currentEmissionRate();
+        onModeChange();
       }
       function setCameraPreset(name) {
         params.view = name;
