@@ -22,7 +22,7 @@ const camera = new THREE.PerspectiveCamera(
   0.1,
   500
 );
-camera.position.set(8, 7, 18);
+camera.position.set(0, 7, -9);
 
 const controls = new OrbitControls(camera, renderer.domElement);
 controls.enableDamping = true;
@@ -62,6 +62,7 @@ const params = {
   resumeSim: () => (params.paused = false),
   applyPresetBase: () => applyPreset('base'),
   applyPresetOne: () => applyPreset('preset1'),
+  applyPresetTwo: () => applyPreset('preset2'),
   view: 'threeQuarter',
 };
 
@@ -108,6 +109,7 @@ function init() {
   setupGui();
   params.derivedEmission = currentEmissionRate();
   window.addEventListener('resize', onResize);
+  window.addEventListener('keydown', onKeyDown);
 }
 
 function addBackground() {
@@ -817,9 +819,9 @@ function setupGui() {
   const gui = new GUI({ title: 'Controls', width: 320 });
 
   const fWave = gui.addFolder('Wave / Source');
-  fWave.add(params, 'wavelength', 0.2, 1.5, 0.01).onChange(onParamsChange);
-  fWave.add(params, 'amplitudeScale', 0.05, 0.6, 0.01);
-  fWave.add(params, 'waveSpeed', 0.2, 8, 0.05).onChange(() => {
+  fWave.add(params, 'wavelength', 0.2, 1.5, 0.01).name('Wavelength').onChange(onParamsChange);
+  fWave.add(params, 'amplitudeScale', 0.05, 0.6, 0.01).name('Amplitude scale');
+  fWave.add(params, 'waveSpeed', 0.2, 8, 0.05).name('Wave speed').onChange(() => {
     params.derivedEmission = currentEmissionRate();
   });
   fWave
@@ -834,7 +836,7 @@ function setupGui() {
     .name('Mode')
     .onChange(onModeChange)
     .listen();
-  fWave.add(params, 'showField').listen();
+  fWave.add(params, 'showField').name('Show field').listen();
 
   const fSlits = gui.addFolder('Slits / Wall');
   const activeCtrl = fSlits.add(params, 'activeSlit', 0, 5, 1).name('Active slit');
@@ -846,8 +848,8 @@ function setupGui() {
       activeCtrl.max(Math.max(0, params.slitCount - 1));
       onParamsChange();
     });
-  fSlits.add(params, 'slitSeparation', 0.4, 6, 0.01).onChange(onParamsChange);
-  fSlits.add(params, 'slitWidth', 0.05, 0.8, 0.01).onChange(onParamsChange);
+  fSlits.add(params, 'slitSeparation', 0.4, 6, 0.01).name('Slit separation').onChange(onParamsChange);
+  fSlits.add(params, 'slitWidth', 0.05, 0.8, 0.01).name('Slit width').onChange(onParamsChange);
   fSlits
     .add(params, 'slitMaskMode', { 'All open': 'all', 'Single slit': 'single', Cycle: 'cycle' })
     .name('Mask mode')
@@ -855,7 +857,7 @@ function setupGui() {
   activeCtrl
     .onChange(onParamsChange);
   fSlits.add(params, 'cyclePeriod', 0.5, 10, 0.1).name('Cycle period (s)').onChange(onParamsChange);
-  fSlits.add(params, 'slitPlaneZ', 2, 12, 0.1).onChange(onGeometryChange);
+  fSlits.add(params, 'slitPlaneZ', 2, 12, 0.1).name('Slit plane Z').onChange(onGeometryChange);
   fSlits.add(params, 'showWall').name('Show wall').onChange(v => (wall.visible = v));
 
   const fDetector = gui.addFolder('Detector');
@@ -867,7 +869,7 @@ function setupGui() {
       onGeometryChange();
     });
   fDetector.add(params, 'screenZ', 8, 36, 0.1).name('Screen Z').onChange(onGeometryChange);
-  fDetector.add(params, 'screenWidth', 8, 30, 0.1).onChange(onGeometryChange);
+  fDetector.add(params, 'screenWidth', 8, 30, 0.1).name('Screen width').onChange(onGeometryChange);
   fDetector.add(params, 'showIndicators')
     .name('Show indicators')
     .onChange(v => {
@@ -882,6 +884,7 @@ function setupGui() {
   const fPresets = gui.addFolder('Presets');
   fPresets.add(params, 'applyPresetBase').name('Preset: Base');
   fPresets.add(params, 'applyPresetOne').name('Preset One');
+  fPresets.add(params, 'applyPresetTwo').name('Preset Two');
 
   const fView = gui.addFolder('Camera / Playback');
   fView.add(params, 'autoRotate').name('Auto rotate');
@@ -930,11 +933,35 @@ function applyPreset(name) {
     params.mode = 'wave';
     params.showField = false;
     params.emissionPerSpeed = 5;
+  } else if (name === 'preset2') {
+    // Restore base defaults, then apply the requested tweaks.
+    params.wavelength = 0.6;
+    params.slitSeparation = 3;
+    params.slitWidth = 0.25;
+    params.slitCount = 2;
+    params.slitMaskMode = 'all';
+    params.activeSlit = 0;
+    params.cyclePeriod = 2.5;
+    params.slitPlaneZ = 5;
+    params.detectorOffset = 7.5;
+    params.screenZ = 12.5;
+    params.screenWidth = 22;
+    params.amplitudeScale = 0.2;
+    params.waveSpeed = 0.5;
+    params.autoRotate = false;
+    params.paused = false;
+    params.showWall = true;
+    params.mode = 'wave';
+    params.showField = true;
+    params.showIndicators = true;
+    params.showTrails = true;
+    params.emissionPerSpeed = 2;
   } else {
     return;
   }
   params.derivedEmission = currentEmissionRate();
   onModeChange();
+  onGeometryChange();
 }
 
 function setCameraPreset(name) {
@@ -945,7 +972,8 @@ function setCameraPreset(name) {
   } else if (name === 'side') {
     camera.position.set(params.screenWidth * 0.9, 0.5 * (params.screenZ + params.slitPlaneZ), params.screenZ);
   } else {
-    camera.position.set(8, 7, 18);
+    // Default: behind the emitter, slightly above, looking toward the slits/screen.
+    camera.position.set(0, 7, -9);
   }
   controls.update();
 }
@@ -969,4 +997,12 @@ function onResize() {
   camera.aspect = window.innerWidth / window.innerHeight;
   camera.updateProjectionMatrix();
   renderer.setSize(window.innerWidth, window.innerHeight);
+}
+
+function onKeyDown(e) {
+  // Toggle pause with space bar; ignore if typing in an input field.
+  if (e.code === 'Space' && !['INPUT', 'TEXTAREA', 'SELECT', 'BUTTON'].includes(e.target.tagName)) {
+    e.preventDefault();
+    params.paused = !params.paused;
+  }
 }

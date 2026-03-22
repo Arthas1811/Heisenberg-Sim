@@ -1,0 +1,17 @@
+{
+  "name": "heisenbergs-microscope",
+  "version": "1.0.0",
+  "description": "Interactive 2D Heisenberg microscope thought experiment sandbox.",
+  "main": "main.js",
+  "scripts": {
+    "build": "esbuild main.js --bundle --format=iife --global-name=HeisenbergMicroscope --outfile=bundle.js",
+    "start": "npx http-server -c-1 ."
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "module",
+  "devDependencies": {
+    "esbuild": "^0.27.4"
+  }
+}

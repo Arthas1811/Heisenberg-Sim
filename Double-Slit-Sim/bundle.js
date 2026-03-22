@@ -21275,7 +21275,7 @@ var Sim = (() => {
         0.1,
         500
       );
-      camera.position.set(8, 7, 18);
+      camera.position.set(0, 7, -9);
       var controls = new OrbitControls(camera, renderer.domElement);
       controls.enableDamping = true;
       var ambient = new AmbientLight(7315711, 0.5);
@@ -21317,6 +21317,7 @@ var Sim = (() => {
         resumeSim: () => params.paused = false,
         applyPresetBase: () => applyPreset("base"),
         applyPresetOne: () => applyPreset("preset1"),
+        applyPresetTwo: () => applyPreset("preset2"),
         view: "threeQuarter"
       };
       controls.target.set(0, 0, params.slitPlaneZ);
@@ -21361,6 +21362,7 @@ var Sim = (() => {
         setupGui();
         params.derivedEmission = currentEmissionRate();
         window.addEventListener("resize", onResize);
+        window.addEventListener("keydown", onKeyDown);
       }
       function addBackground() {
         const stars = new Points(
@@ -21933,16 +21935,16 @@ var Sim = (() => {
       function setupGui() {
         const gui = new lil_gui_esm_min_default({ title: "Controls", width: 320 });
         const fWave = gui.addFolder("Wave / Source");
-        fWave.add(params, "wavelength", 0.2, 1.5, 0.01).onChange(onParamsChange);
-        fWave.add(params, "amplitudeScale", 0.05, 0.6, 0.01);
-        fWave.add(params, "waveSpeed", 0.2, 8, 0.05).onChange(() => {
+        fWave.add(params, "wavelength", 0.2, 1.5, 0.01).name("Wavelength").onChange(onParamsChange);
+        fWave.add(params, "amplitudeScale", 0.05, 0.6, 0.01).name("Amplitude scale");
+        fWave.add(params, "waveSpeed", 0.2, 8, 0.05).name("Wave speed").onChange(() => {
           params.derivedEmission = currentEmissionRate();
         });
         fWave.add(params, "emissionPerSpeed", 0, 80, 1).name("Emission per speed").onChange(() => {
           params.derivedEmission = currentEmissionRate();
         }).listen();
         fWave.add(params, "mode", { Wave: "wave", Particle: "particle" }).name("Mode").onChange(onModeChange).listen();
-        fWave.add(params, "showField").listen();
+        fWave.add(params, "showField").name("Show field").listen();
         const fSlits = gui.addFolder("Slits / Wall");
         const activeCtrl = fSlits.add(params, "activeSlit", 0, 5, 1).name("Active slit");
         fSlits.add(params, "slitCount", 1, 6, 1).name("Number of slits").onChange(() => {
@@ -21950,12 +21952,12 @@ var Sim = (() => {
           activeCtrl.max(Math.max(0, params.slitCount - 1));
           onParamsChange();
         });
-        fSlits.add(params, "slitSeparation", 0.4, 6, 0.01).onChange(onParamsChange);
-        fSlits.add(params, "slitWidth", 0.05, 0.8, 0.01).onChange(onParamsChange);
+        fSlits.add(params, "slitSeparation", 0.4, 6, 0.01).name("Slit separation").onChange(onParamsChange);
+        fSlits.add(params, "slitWidth", 0.05, 0.8, 0.01).name("Slit width").onChange(onParamsChange);
         fSlits.add(params, "slitMaskMode", { "All open": "all", "Single slit": "single", Cycle: "cycle" }).name("Mask mode").onChange(onParamsChange);
         activeCtrl.onChange(onParamsChange);
         fSlits.add(params, "cyclePeriod", 0.5, 10, 0.1).name("Cycle period (s)").onChange(onParamsChange);
-        fSlits.add(params, "slitPlaneZ", 2, 12, 0.1).onChange(onGeometryChange);
+        fSlits.add(params, "slitPlaneZ", 2, 12, 0.1).name("Slit plane Z").onChange(onGeometryChange);
         fSlits.add(params, "showWall").name("Show wall").onChange((v) => wall.visible = v);
         const fDetector = gui.addFolder("Detector");
         fDetector.add(params, "detectorOffset", 2, 32, 0.1).name("Distance from slits").onChange((val) => {
@@ -21963,7 +21965,7 @@ var Sim = (() => {
           onGeometryChange();
         });
         fDetector.add(params, "screenZ", 8, 36, 0.1).name("Screen Z").onChange(onGeometryChange);
-        fDetector.add(params, "screenWidth", 8, 30, 0.1).onChange(onGeometryChange);
+        fDetector.add(params, "screenWidth", 8, 30, 0.1).name("Screen width").onChange(onGeometryChange);
         fDetector.add(params, "showIndicators").name("Show indicators").onChange((v) => {
           if (!v) {
             hitSprites.forEach((h2) => scene.remove(h2.mesh));
@@ -21975,6 +21977,7 @@ var Sim = (() => {
         const fPresets = gui.addFolder("Presets");
         fPresets.add(params, "applyPresetBase").name("Preset: Base");
         fPresets.add(params, "applyPresetOne").name("Preset One");
+        fPresets.add(params, "applyPresetTwo").name("Preset Two");
         const fView = gui.addFolder("Camera / Playback");
         fView.add(params, "autoRotate").name("Auto rotate");
         fView.add(params, "pauseSim").name("Pause");
@@ -22014,11 +22017,34 @@ var Sim = (() => {
           params.mode = "wave";
           params.showField = false;
           params.emissionPerSpeed = 5;
+        } else if (name === "preset2") {
+          params.wavelength = 0.6;
+          params.slitSeparation = 3;
+          params.slitWidth = 0.25;
+          params.slitCount = 2;
+          params.slitMaskMode = "all";
+          params.activeSlit = 0;
+          params.cyclePeriod = 2.5;
+          params.slitPlaneZ = 5;
+          params.detectorOffset = 7.5;
+          params.screenZ = 12.5;
+          params.screenWidth = 22;
+          params.amplitudeScale = 0.2;
+          params.waveSpeed = 0.5;
+          params.autoRotate = false;
+          params.paused = false;
+          params.showWall = true;
+          params.mode = "wave";
+          params.showField = true;
+          params.showIndicators = true;
+          params.showTrails = true;
+          params.emissionPerSpeed = 2;
         } else {
           return;
         }
         params.derivedEmission = currentEmissionRate();
         onModeChange();
+        onGeometryChange();
       }
       function setCameraPreset(name) {
         params.view = name;
@@ -22028,7 +22054,7 @@ var Sim = (() => {
         } else if (name === "side") {
           camera.position.set(params.screenWidth * 0.9, 0.5 * (params.screenZ + params.slitPlaneZ), params.screenZ);
         } else {
-          camera.position.set(8, 7, 18);
+          camera.position.set(0, 7, -9);
         }
         controls.update();
       }
@@ -22048,6 +22074,12 @@ var Sim = (() => {
         camera.aspect = window.innerWidth / window.innerHeight;
         camera.updateProjectionMatrix();
         renderer.setSize(window.innerWidth, window.innerHeight);
+      }
+      function onKeyDown(e2) {
+        if (e2.code === "Space" && !["INPUT", "TEXTAREA", "SELECT", "BUTTON"].includes(e2.target.tagName)) {
+          e2.preventDefault();
+          params.paused = !params.paused;
+        }
       }
     }
   });

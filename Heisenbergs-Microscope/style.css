@@ -1,0 +1,91 @@
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600&display=swap');
+
+:root {
+  --bg-1: #040b14;
+  --bg-2: #0c1f30;
+  --accent: #64f2d0;
+  --accent-2: #f7c266;
+  --muted: #9fb8d6;
+  --panel: rgba(6, 14, 24, 0.7);
+  --stroke: rgba(255, 255, 255, 0.12);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  overflow: hidden;
+  font-family: 'Space Grotesk', 'Segoe UI', system-ui, -apple-system, sans-serif;
+  background: radial-gradient(circle at 20% 15%, #0c2941, var(--bg-1) 40%),
+    radial-gradient(circle at 80% 80%, #0a1625, var(--bg-2) 50%),
+    linear-gradient(145deg, #0a1625, #050b12 65%);
+  color: #eaf3ff;
+}
+
+#scene {
+  width: 100vw;
+  height: 100vh;
+  display: block;
+}
+
+#overlay {
+  position: absolute;
+  top: 14px;
+  left: 14px;
+  z-index: 10;
+  padding: 10px 14px;
+  background: var(--panel);
+  border: 1px solid var(--stroke);
+  border-radius: 10px;
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+}
+
+#overlay h1 {
+  margin: 0;
+  font-size: 18px;
+  letter-spacing: 0.4px;
+}
+
+#overlay .hint {
+  margin: 4px 0 0;
+  font-size: 12px;
+  color: var(--muted);
+}
+
+#credit {
+  position: absolute;
+  right: 14px;
+  bottom: 14px;
+  z-index: 10;
+  padding: 8px 10px;
+  background: var(--panel);
+  border: 1px solid var(--stroke);
+  border-radius: 8px;
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  font-size: 12px;
+  color: var(--muted);
+}
+
+#credit a {
+  color: #7de2ff;
+  text-decoration: none;
+}
+
+#credit a:hover {
+  text-decoration: underline;
+}
+
+.lil-gui {
+  --text-color: #e9f1ff;
+  --name-width: 120px;
+  --background-color: rgba(7, 16, 26, 0.8);
+  --title-background-color: rgba(255, 255, 255, 0.06);
+  --widget-color: rgba(255, 255, 255, 0.08);
+  --hover-color: rgba(255, 255, 255, 0.14);
+  --focus-color: #7de2ff;
+  color: var(--text-color);
+}
